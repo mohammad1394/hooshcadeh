@@ -2,7 +2,7 @@
 
 import React from 'react';
 import data from "../../data/commentdb.json";
-import CommentTempalete from "@/app/components/tempalete/CommentTempalete";
+import CommentTemplate from "@/app/components/template/CommentTemplate";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -55,7 +55,7 @@ function CommentSection() {
             <Slider {...settings}>
             {
                commentsM.map((comment, index) => (
-                    <CommentTempalete {...comment} key={comment.id}/>
+                    <CommentTemplate {...comment} key={comment.id}/>
                ))
             }
             </Slider>

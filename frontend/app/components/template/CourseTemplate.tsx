@@ -12,7 +12,7 @@ interface Props {
 
 
 }
-function CourseTempalete({ title , description , image , price , scode} : Props) {
+function CourseTemplate({ title , description , image , price , scode} : Props) {
     return (
         <div className={"text-right"}>
             <div className="bg-white p-3">
@@ -33,4 +33,4 @@ function CourseTempalete({ title , description , image , price , scode} : Props)
     );
 }
 
-export default CourseTempalete;
+export default CourseTemplate;

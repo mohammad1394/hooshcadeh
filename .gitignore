@@ -83,3 +83,6 @@ Desktop.ini
 # ========================
 .vercel
 *.env.local
+
+# Old directory structure (to be deleted)
+front end/

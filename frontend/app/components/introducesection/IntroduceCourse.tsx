@@ -3,7 +3,7 @@
 import React from "react";
 import Container from "@/app/components/Container";
 import productData from "../../data/db.json";
-import CourseTempalete from "@/app/components/tempalete/CourseTempalete";
+import CourseTemplate from "@/app/components/template/CourseTemplate";
 import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
@@ -54,7 +54,7 @@ function IntroduceCourse() {
                 <Slider {...settings}>
                     {courses.map((course) => (
                         <div key={course.id} className="px-2">
-                            <CourseTempalete {...course} />
+                            <CourseTemplate {...course} />
                         </div>
                     ))}
                 </Slider>

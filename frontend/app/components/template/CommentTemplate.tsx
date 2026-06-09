@@ -6,7 +6,7 @@ interface  Props {
     name : string ;
     comment : string;
 }
-function CommentTempalete({ name , comment}: Props) {
+function CommentTemplate({ name , comment}: Props) {
     return (
 
             <div className={"bg-white rounded-xl m-3 my-20 p-5 flex flex-col gap-3 text-center h-[60vh]"}>
@@ -19,4 +19,4 @@ function CommentTempalete({ name , comment}: Props) {
     );
 }
 
-export default CommentTempalete;
+export default CommentTemplate;
