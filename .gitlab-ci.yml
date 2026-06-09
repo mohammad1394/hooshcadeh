@@ -1,0 +1,135 @@
+# ==================================================
+# GitLab CI/CD Pipeline for TechnoHoosh
+# ==================================================
+
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+
+variables:
+  # Docker image registry (change to your registry)
+  REGISTRY: $CI_REGISTRY
+  BACKEND_IMAGE: $CI_REGISTRY_IMAGE/backend
+  FRONTEND_IMAGE: $CI_REGISTRY_IMAGE/frontend
+
+# ==================== Lint Stage ====================
+
+lint:backend:
+  stage: lint
+  image: python:3.12-slim
+  script:
+    - cd backend
+    - pip install flake8
+    - flake8 . --max-line-length=120 --exclude=migrations,__pycache__,venv
+  allow_failure: true
+
+lint:frontend:
+  stage: lint
+  image: node:20-alpine
+  script:
+    - cd frontend
+    - npm ci --ignore-scripts
+    - npm run lint
+  allow_failure: true
+
+# ==================== Test Stage ====================
+
+test:backend:
+  stage: test
+  image: python:3.12-slim
+  services:
+    - postgres:15-alpine
+  variables:
+    POSTGRES_DB: test_technohoosh
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: testpassword
+    DB_NAME: test_technohoosh
+    DB_USER: postgres
+    DB_PASSWORD: testpassword
+    DB_HOST: postgres
+    DB_PORT: "5432"
+    DJANGO_SECRET_KEY: test-secret-key
+    DJANGO_DEBUG: "True"
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends libpq-dev gcc
+    - cd backend
+    - pip install -r requirements.txt
+  script:
+    - python manage.py check
+    - python manage.py migrate --noinput
+    - python manage.py test --verbosity=2
+  allow_failure: true
+
+test:frontend:build:
+  stage: test
+  image: node:20-alpine
+  script:
+    - cd frontend
+    - npm ci --ignore-scripts
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/.next/
+    expire_in: 1 hour
+
+# ==================== Build Stage ====================
+
+build:backend:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t $BACKEND_IMAGE:$CI_COMMIT_SHA -t $BACKEND_IMAGE:latest ./backend
+    - docker push $BACKEND_IMAGE:$CI_COMMIT_SHA
+    - docker push $BACKEND_IMAGE:latest
+  only:
+    - main
+    - develop
+
+build:frontend:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t $FRONTEND_IMAGE:$CI_COMMIT_SHA -t $FRONTEND_IMAGE:latest ./frontend
+    - docker push $FRONTEND_IMAGE:$CI_COMMIT_SHA
+    - docker push $FRONTEND_IMAGE:latest
+  only:
+    - main
+    - develop
+
+# ==================== Deploy Stage ====================
+
+deploy:staging:
+  stage: deploy
+  image: docker:24
+  environment:
+    name: staging
+  script:
+    - echo "Deploy to staging server"
+    # Uncomment and configure when server is ready:
+    # - ssh $DEPLOY_USER@$STAGING_SERVER "cd /opt/technohoosh && docker-compose pull && docker-compose up -d"
+  only:
+    - develop
+  when: manual
+
+deploy:production:
+  stage: deploy
+  image: docker:24
+  environment:
+    name: production
+  script:
+    - echo "Deploy to production server"
+    # Uncomment and configure when server is ready:
+    # - ssh $DEPLOY_USER@$PROD_SERVER "cd /opt/technohoosh && docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d"
+  only:
+    - main
+  when: manual

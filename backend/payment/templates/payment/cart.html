@@ -1,0 +1,15 @@
+<h1>Cart</h1>
+{% for course in courses %}
+<ul>
+    <li>
+        {{ course.title }}
+    </li>
+</ul>
+<form action="{% url 'payment:delete-cart' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="pk" value="{{ course.pk }}">
+    <button type="submit">delete</button>
+</form>
+{% endfor %}
+<h3>Count : {{count}}</h3>
+<h3>total price : {{total_price}}</h3>

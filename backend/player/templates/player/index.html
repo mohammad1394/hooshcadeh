@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>اسپات پلیر </title>
+    
+    <style>
+        /* استایل‌های پایه برای نمایش پلیر */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        iframe{
+            width: 100vw;
+            height: 100vh;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="player"></div>
+    
+    <script src="https://app.spotplayer.ir/assets/js/app-api.js"></script>
+    
+    <script>
+        // ============================================================
+        // دریافت اطلاعات از پایتون (متغیرهای ارسالی از ویو)
+        // ============================================================
+        const LICENSE_KEY = "{{ license_key|escapejs }}";
+        const COURSE_ID = "{{ course_id|escapejs }}";
+        const ITEM_ID = "{{ item_id|escapejs }}";
+        const COOKIE_SYNC_URL = "{{ cookie_sync_url|default:'/player/spotx/' }}";
+        const COOKIE_NAME = "{{ cookie_name|default:'X' }}";
+        const SIDE_PANEL = {{ side_panel|yesno:"true,false" }};
+        const HAS_ERROR = {{ has_error|yesno:"true,false" }};
+        
+        // ============================================================
+        // متغیرهای سراسری
+        // ============================================================
+        let spotPlayer = null;      // نمونه شی اسپات پلیر
+        let isReady = false;        // وضعیت آماده بودن پلیر
+        
+        // ============================================================
+        // تابع نمایش خطا به کاربر
+        // ============================================================
+        function showError(message) {
+            const playerDiv = document.getElementById('player');
+            if (playerDiv) {
+                playerDiv.innerHTML = `
+                    <div class="error-message">
+                        <strong>❌ خطا در بارگذاری</strong><br>
+                        ${message}<br><br>
+                        <button onclick="location.reload()" style="
+                            padding: 10px 20px;
+                            background-color: #e67e22;
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                        ">تلاش مجدد</button>
+                    </div>
+                `;
+            }
+            console.error('SpotPlayer Error:', message);
+        }
+        
+        // ============================================================
+        // تابع همگام‌سازی کوکی (ارسال به سرور جنگو)
+        // معادل کد PHP/Express که قبلاً بررسی کردیم
+        // ============================================================
+        async function syncCookie() {
+            console.log('[1] Starting cookie sync...');
+            
+            try {
+                // ارسال درخواست POST به سرور جنگو برای همگام‌سازی کوکی
+                // این درخواست باعث می‌شود middleware ما فعال شود
+                const response = await fetch(COOKIE_SYNC_URL, {
+                    method: 'POST',
+                    credentials: 'include',  // مهم: کوکی‌ها را همراه درخواست بفرست
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                if (response.status === 204 || response.ok) {
+                    console.log('[1] ✅ Cookie synced successfully');
+                    return true;
+                } else {
+                    console.log('[1] ⚠️ Cookie sync returned:', response.status);
+                    return false;
+                }
+            } catch (error) {
+                console.error('[1] ❌ Cookie sync error:', error);
+                return false;
+            }
+        }
+        
+        // ============================================================
+        // تابع ایجاد و راه‌اندازی پلیر
+        // ============================================================
+        async function initPlayer() {
+            const playerElement = document.getElementById('player');
+            
+            if (!playerElement) {
+                showError('عنصر پلیر یافت نشد');
+                return false;
+            }
+            
+            try {
+                // مرحله 1: همگام‌سازی کوکی
+                const synced = await syncCookie();
+                if (!synced) {
+                    showError('خطا در همگام‌سازی، لطفاً صفحه را رفرش کنید');
+                    return false;
+                }
+                
+                // مرحله 2: ایجاد نمونه جدید از اسپات پلیر
+                // پارامترها:
+                // 1. المنت DOM برای نمایش پلیر
+                // 2. آدرس همگام‌سازی کوکی
+                // 3. نمایش پنل کناری (true/false)
+                // 4. نام کوکی (پیش‌فرض X)
+                console.log('[2] Creating SpotPlayer instance...');
+                spotPlayer = new SpotPlayer(
+                    playerElement,      // المنت
+                    COOKIE_SYNC_URL,    // آدرس همگام‌سازی
+                    SIDE_PANEL,         // پنل کناری
+                    COOKIE_NAME         // نام کوکی
+                );
+                
+                console.log('[2] ✅ SpotPlayer created successfully');
+                isReady = true;
+                return true;
+                
+            } catch (error) {
+                console.error('[2] ❌ Init error:', error);
+                showError('خطا در راه‌اندازی پلیر: ' + error.message);
+                return false;
+            }
+        }
+        
+        // ============================================================
+        // تابع باز کردن محتوا در پلیر
+        // ============================================================
+        async function openContent() {
+            if (!spotPlayer || !isReady) {
+                console.warn('[3] Player not ready yet');
+                return false;
+            }
+            
+            if (!LICENSE_KEY) {
+                showError('کلید لایسنس وارد نشده است');
+                return false;
+            }
+            
+            try {
+                console.log('[3] Opening content...');
+                console.log('[3] Key:', LICENSE_KEY.substring(0, 20) + '...');
+                console.log('[3] Course:', COURSE_ID || '(none)');
+                console.log('[3] Item:', ITEM_ID || '(none)');
+                
+                // باز کردن محتوا در پلیر
+                // پارامترها:
+                // 1. کلید لایسنس (اجباری)
+                // 2. شناسه دوره (اختیاری - اگر null باشد، لیست دوره‌ها نمایش داده می‌شود)
+                // 3. شناسه محتوا (اختیاری)
+                await spotPlayer.Open(
+                    LICENSE_KEY,
+                    COURSE_ID || null,
+                    ITEM_ID || null
+                );
+                
+                console.log('[3] ✅ Content opened successfully');
+                return true;
+                
+            } catch (error) {
+                console.error('[3] ❌ Open error:', error);
+                showError('خطا در بارگذاری محتوا: ' + error.message);
+                return false;
+            }
+        }
+        
+        // ============================================================
+        // تابع توقف پخش
+        // ============================================================
+        async function stopPlayer() {
+            if (!spotPlayer || !isReady) {
+                console.warn('Player not ready');
+                return;
+            }
+            
+            try {
+                await spotPlayer.Stop();
+                console.log('✅ Player stopped');
+            } catch (error) {
+                console.error('Stop error:', error);
+            }
+        }
+        
+        // ============================================================
+        // تابع پنهان کردن پلیر
+        // ============================================================
+        async function hidePlayer() {
+            if (!spotPlayer || !isReady) {
+                console.warn('Player not ready');
+                return;
+            }
+            
+            try {
+                await spotPlayer.Hide();
+                console.log('✅ Player hidden');
+            } catch (error) {
+                console.error('Hide error:', error);
+            }
+        }
+        
+        // ============================================================
+        // تابع نمایش مجدد پلیر (باز کردن مجدد محتوا)
+        // ============================================================
+        async function showPlayer() {
+            if (!spotPlayer || !isReady) {
+                console.warn('Player not ready');
+                return;
+            }
+            
+            try {
+                await spotPlayer.Open(LICENSE_KEY, COURSE_ID || null, ITEM_ID || null);
+                console.log('✅ Player shown');
+            } catch (error) {
+                console.error('Show error:', error);
+            }
+        }
+        
+        // ============================================================
+        // راه‌اندازی اصلی - وقتی صفحه کامل بارگذاری شد
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('=== SpotPlayer Initialization Started ===');
+            
+            // اگر خطایی در ویو وجود داشت، نمایش بده
+            if (HAS_ERROR) {
+                showError('{{ error|default:"خطای ناشناخته" }}');
+                return;
+            }
+            
+            // اگر کلید لایسنس وجود نداشت، خطا بده
+            if (!LICENSE_KEY) {
+                showError('کلید لایسنس وارد نشده است');
+                return;
+            }
+            
+            // راه‌اندازی پلیر
+            const initialized = await initPlayer();
+            
+            if (initialized) {
+                // باز کردن محتوا
+                await openContent();
+            }
+            
+            console.log('=== SpotPlayer Initialization Complete ===');
+        });
+        
+        // ============================================================
+        // در دسترس قرار دادن توابع برای استفاده در console (دیباگ)
+        // ============================================================
+        window.SpotPlayerAPI = {
+            syncCookie,
+            initPlayer,
+            openContent,
+            stopPlayer,
+            hidePlayer,
+            showPlayer,
+            getStatus: () => ({ isReady, hasPlayer: !!spotPlayer })
+        };
+        
+        console.log('SpotPlayer API available at window.SpotPlayerAPI');
+    </script>
+</body>
+</html>
