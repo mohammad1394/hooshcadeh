@@ -21,7 +21,7 @@ function Footer() {
 
             <div className="absolute top-0 right-0 left-0 -translate-y-[calc(100%-1px)] overflow-hidden leading-[0] pointer-events-none">
                 <svg
-                    className="relative block w-full h-[90px] sm:h-[120px] lg:h-[150px]"
+                    className="relative block w-full h-[90px] sm:h-[100px] lg:h-[150px]"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 1200 150"
                     preserveAspectRatio="none"

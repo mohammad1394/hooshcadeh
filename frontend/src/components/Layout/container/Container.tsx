@@ -7,7 +7,7 @@ interface ContainerProps {
 
 function Container({children , className}: ContainerProps) {
     return (
-        <div className={`w-[80%] mx-auto ${ className }`}>
+        <div className={`w-[85%] mx-auto ${ className }`}>
             {children}
         </div>
     );

@@ -11,7 +11,7 @@ export type Course = {
     category: number;
     discount: number;
     students: number;
-    orginal_price: string;
+    orginal_price: number;
     final_price: string;
     comments: any[];
     time: number;

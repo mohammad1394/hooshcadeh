@@ -31,7 +31,7 @@ export default function NavbarActions() {
     return (
         <>
             <button
-                className="lg:hidden text-black"
+                className="lg:hidden text-white"
                 onClick={() => setMenuOpen(!menuisOpen)}
             >
                 <FaBars />
@@ -46,7 +46,7 @@ export default function NavbarActions() {
                 <Link href="/cart">
                     <button className="bg-[#00c896] relative rounded-[15px] my-auto w-12 h-12 flex items-center justify-center">
                         {cart.length > 0 && (
-                            <span className="absolute -top-2 -right-2 bg-white text-black text-xs rounded-full w-5 h-5 border border-[#00c896]">
+                            <span className="absolute -top-2 -right-2 bg-white text-[#FB923C] font-bold text-xs rounded-full w-5 h-5 border border-[#00c896]">
                                 {cart.length}
                             </span>
                         )}
@@ -70,7 +70,7 @@ export default function NavbarActions() {
                                     e.stopPropagation();
                                     setIsOpen(!isOpen);
                                 }}
-                                className="bg-[#3393E7] flex flex-row-reverse gap-1 items-center rounded-[15px] w-[120px] lg:w-[180px] justify-center text-[12px] lg:text-[16px] py-[10px] px-[11px]"
+                                className="bg-[#1D9E75] flex flex-row-reverse gap-1 items-center rounded-[15px] w-[120px] lg:w-[180px] justify-center text-[12px] lg:text-[16px] py-[10px] px-[11px]"
                             >
                                 <IoMdArrowDropdown />
                                 <span className="hidden md:block">
