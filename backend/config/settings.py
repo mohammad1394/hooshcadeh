@@ -153,6 +153,8 @@ SIMPLE_JWT = {
 
 
 # ========== CORS ==========
+CORS_ALLOW_CREDENTIALS = True
+
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
