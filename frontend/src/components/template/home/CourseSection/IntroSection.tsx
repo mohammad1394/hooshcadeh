@@ -1,12 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import Container from "@/components/Layout/container/Container";
 
 const Home = () => {
     return (
         <div>
-            <div className="w-full my-5 md:w-[80%] mx-auto ">
-                <img src="/assets/banner-hom-top.png" className={'w-full mb-5'} alt="" />
-            </div>
+            <Container className={"my-10"}>
+                <img src="/assets/ChatGPT%20Image%20Jun%2012,%202026,%2011_31_44%20PM.png" className={'w-full mb-5'} alt="" />
+            </Container>
         </div>
     );
 };
