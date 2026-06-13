@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Vazirmatn";
+    src: url("/static/fonts/Vazirmatn-Regular.woff2") format("woff2");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Vazirmatn";
+    src: url("/static/fonts/Vazirmatn-Bold.woff2") format("woff2");
+    font-weight: 700;
+}
+
+body,
+input,
+textarea,
+select,
+.btn,
+.nav-link {
+    font-family: "Vazirmatn", sans-serif !important;
+}
