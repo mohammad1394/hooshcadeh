@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django import forms
+from django_ckeditor_5.widgets import CKEditor5Widget
 from . import models
 
 
@@ -14,7 +16,16 @@ def deactive_is_published(modeladmin, request, queryset):
     modeladmin.message_user(request, f'{queryset.count()} محصولات منتشر نشدند')
 
 
+class CourseAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.CourseModel
+        fields = '__all__'
+        widgets = {
+            'description': CKEditor5Widget(config_name='default')
+        }
+
 class CourseAdminModel(admin.ModelAdmin):
+    form = CourseAdminForm
     list_display = ['title', 'teacher', 'final_formatted_price', 'is_published', 'created_jalali', 'updated_jalali']
     search_fields = ['title', 'description']
     list_filter = ['created', 'is_published', 'title']
