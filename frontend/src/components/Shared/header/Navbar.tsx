@@ -30,7 +30,7 @@ function Navbar() {
 
                     <div className={"justify-center items-center mx-auto "}>
                         <img
-                            src="/assets/Untitled-3.webp"
+                            src="/assets/logo.png"
                             alt="Logo"
                             className="h-[70px] w-[70px] lg:h-[100px] lg:w-[100px]"
                         />

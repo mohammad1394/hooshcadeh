@@ -2,25 +2,49 @@ import React from 'react';
 
 function ArticleCard() {
     return (
-        <div className="bg-white rounded-xl relative my-10">
-            <div className='flex flex-col gap-2 h-105'>
-                {/* استفاده از product.image و product.title */}
-                <img src={"/assets/47848.webp"} alt={"jornal photo"} className={"rounded-xl"}/>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col text-right my-10">
 
-                <p className='p-slideri px-3'>مکالمه آسان عربی در اربعین با هوش مصنوعی</p>
-                <p className='line-clamp-2 text-gray-500 text-[16px] px-3'>
-                    در آستانه مراسم بزرگ اربعین، یکی از مهم‌ترین دغدغه‌های زائران ایرانی که به زیارت کربلا می‌روند، برقراری ارتباط موثر و سریع با مردم عرب‌زبان است. زبان عربی به عنوان زبان اصلی کشورهای میزبان، از اهمیت ویژه‌ای برخوردار است. اگر شما هم قصد شرکت در این مراسم را دارید و می‌خواهید به راحتی با مردم عراق و دیگر زائران عرب‌زبان ارتباط برقرار کنید، ما یک راهکار ساده و کارآمد برای شما داریم. در این مقاله به بررسی روش استفاده از ابزار ChatGPT برای مکالمه صوتی عربی خواهیم پرداخت و در پایان، یک کلیپ آموزشی در این زمینه قرار داده‌ایم.
+
+            <div className="relative">
+                <img
+                    src="/assets/47848.webp"
+                    alt="journal photo"
+                    className="w-full h-[180px] object-cover rounded-xl"
+                />
+                <span className="absolute top-2.5 right-2.5 bg-white/20 backdrop-blur-sm text-white text-[11px] font-medium px-3 py-1 rounded-full">
+                    مقاله
+                </span>
+            </div>
+
+
+            <div className="p-4 flex flex-col gap-2.5 flex-1">
+                <p className="font-semibold text-[15px] leading-relaxed text-gray-900">
+                    مکالمه آسان عربی در اربعین با هوش مصنوعی
                 </p>
-                <div className={"flex flex-row justify-between mt-5 px-3"}>
-                    <p>عباسعلی رضایی</p>
-                    <p>1405/02/31</p>
+                <p className="line-clamp-3 text-gray-400 text-[13px] leading-relaxed">
+                    در آستانه مراسم بزرگ اربعین، یکی از مهم‌ترین دغدغه‌های زائران ایرانی که به زیارت کربلا
+                    می‌روند، برقراری ارتباط موثر و سریع با مردم عرب‌زبان است...
+                </p>
+
+
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
+                    <div className="flex items-center gap-2">
+                        <span className="text-[12px] text-gray-500">عباسعلی رضایی</span>
+                    </div>
+                    <span className="text-[12px] text-gray-400">۱۴۰۵/۰۲/۳۱</span>
                 </div>
             </div>
-            <button className={"bg-[#1D9E75] text-white w-[90%] p-3 absolute rounded-xl -bottom-5 left-4.5"}>
-                مطالعه
-            </button>
+
+
+            <div className="px-4 pb-4 flex justify-center">
+                <button className={"bg-[#1D9E75] text-white w-[250px] p-3 absolute rounded-xl"}>
+                    مطالعه
+                </button>
+            </div>
         </div>
     );
 }
 
 export default ArticleCard;
+
+

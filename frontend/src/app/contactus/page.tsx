@@ -2,7 +2,7 @@ import React from 'react';
 
 function Page() {
     return (
-        <div className="bg-[url('/assets/contact-us.jpg')] bg-cover bg-center h-screen">
+        <div className="bg-[url('/assets/contactus.png')] bg-cover bg-center w-full h-[60vh] sm:h-[50vh] md:h-[60vh] lg:h-screen">
 
         </div>
     );

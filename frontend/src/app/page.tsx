@@ -17,7 +17,7 @@ export default async function Home() {
     return (
         <div>
             <main>
-                <IntroSection />
+                <IntroSection courses={courses}/>
                 <LatesCourses courses={courses} />
                 <PopularCourses courses={courses} />
                 <LatestArticle/>

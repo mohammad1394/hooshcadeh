@@ -1,170 +1,156 @@
 "use client"
 import React from 'react';
-import {useCart} from "@/context/CartContext";
-import {Course} from "@/services/course";
+import { useCart } from "@/context/CartContext";
+import { Course } from "@/services/course";
+import { Users, Clock, BookOpen, Wifi, Award, HeadphonesIcon, BarChart2, Monitor } from "lucide-react";
 
-
-
-
-function CourseDetails({title  , image , teacher , description,id , orginal_price , students , time} : Course) {
-
+function CourseDetails({ title, image, teacher, description, id, orginal_price, students, time }: Course) {
     const { addToCart } = useCart();
 
+    const specs = [
+        { label: "نوع دوره", value: "آفلاین", icon: <Wifi size={14} /> },
+        { label: "زمان دوره", value: `${time} ساعت`, icon: <Clock size={14} /> },
+        { label: "پیش‌نیاز", value: "بدون پیش‌نیاز", icon: <BookOpen size={14} /> },
+        { label: "تعداد جلسات", value: "۱۹ جلسه", icon: <BookOpen size={14} /> },
+        { label: "روش پشتیبانی", value: "پیام‌رسان و تیکت", icon: <HeadphonesIcon size={14} /> },
+        { label: "سطح دوره", value: "مقدماتی", icon: <BarChart2 size={14} /> },
+        { label: "بستر برگزاری", value: "اسپات پلیر", icon: <Monitor size={14} /> },
+    ];
+
+    const sections = [
+        { title: "درباره دوره", content: description },
+        {
+            title: "سرفصل‌ها", content: [
+                "هوش مصنوعی چیست؟",
+                "چطور از هوش مصنوعی استفاده کنیم؟",
+                "چت‌بات چیست و نحوه استفاده از آن",
+                "کار حرفه‌ای با ChatGPT",
+                "مهارت تولید محتوای متنی",
+                "مهارت پرامپت‌نویسی حرفه‌ای",
+                "تولید تصویرهای تبلیغاتی",
+                "تبدیل متن به ویدئو با هوش مصنوعی",
+                "ایده‌های کسب درآمد با هوش مصنوعی",
+                "ساخت بوم کسب‌وکار و پیچ دک",
+                "مهارت مدیریت کسب‌وکار با هوش مصنوعی",
+                "طراحی لوگو حرفه‌ای",
+                "آموزش حرفه‌ای اپلیکیشن‌های ادیت",
+            ]
+        },
+        { title: "هدف دوره", content: "هدف اصلی دوره مسیر پولسازی با AI، آشنا کردن افراد با کاربردهای هوش مصنوعی در زمینه کسب درآمد و بهبود کسب‌وکارها است. این دوره به شما می‌آموزد که چگونه با استفاده از ابزارها و تکنیک‌های هوش مصنوعی، ایده‌های نوآورانه برای درآمدزایی پیدا کنید." },
+        { title: "این دوره برای چه کسانی مناسب است؟", content: "دوره پولسازان برای تمامی افرادی که علاقه‌مند به افزایش درآمد و بهبود کسب‌وکار خود هستند مناسب است. تنها نیاز یک گوشی هوشمند و اتصال به اینترنت است." },
+        {
+            title: "مزایای دوره", content: [
+                "کاملاً کاربردی و به زبان ساده",
+                "مدرس با دکترای هوش مصنوعی از دانشگاه صنعتی شریف",
+                "بدون هیچ پیش‌نیاز علمی",
+                "پشتیبانی تحت نظارت مدرس",
+                "معرفی به وزارت علوم برای دریافت مدرک",
+            ]
+        },
+    ];
+
     return (
-        <div className={"my-20 flex gap-10"}>
-            <div className={"w-[100%] lg:w-[65%] bg-white"}>
-                <img src={image || "/assets/1020269.jpg"} className={"w-full p-1"}/>
+        <div className="my-16 flex gap-8 text-right" dir="rtl">
 
-                <div className={"p-5"}>
-                    <h1 className={"my-5 text-blue-600 text-xl"}>
-                        {title}
-                    </h1>
-                    <p className={"text-gray-500 leading-9"}>
-                        {description}
-                    </p>
-                    <img src={image || "/assets/1020269.jpg"} className={"my-10"}/>
-                    <p className={"my-5 text-blue-600 text-xl"}>
-                        سرفصل ها
-                    </p>
-                    <p className={"text-gray-500 leading-9"}>
-                        هوش مصنوعی چیه ؟<br/>
-                        چطوری از هوش مصنوعی استفاده کنیم ؟<br/>
-                        چت بات چیه و نحوه استفاده از اون چیست؟<br/>
-                        نحوه کار حرفه ای با Chatgpt چگونه است؟<br/>
-                        نوشتن مقاله وب سایتی<br/>
-                        مهارت تولید محتوای متنی با ChatGPT<br/>
-                        مهارت پرامپت نویسی حرفه ای<br/>
-                        تولید تصویر های تبلیغاتی<br/>
-                        تبدیل متن به ویدئو با هوش مصنوعی<br/>
-                        تبدیل ویس و گفتار به نوشتار<br/>
-                        ایده های کسب درآمد با هوش مصنوعی<br/>
-                        معرفی انواع کسب درآمد دلاری، ریالی<br/>
-                        و روش های اجرایی(یوتیوب، فریلنسری، تولیدمحتوا و …)<br/>
-                        ساخت بوم کسب و‌کار و پیچ دک<br/>
-                        مهارت مدیریت کسب و کارها با هوش مصنوعی<br/>
-                        آموزش و نکات کانالدارای تخصصی با هوش مصنوعی<br/>
-                        ساخت تقویم محتوایی برای فضای مجازی و کسب و کارهای آنلاین با هوش مصنوعی<br/>
-                        تولید محتوای حرفه ای : متنی، صوتی، تصویری، ویدئو ای<br/>
-                        آموزش ساخت آواتار سخنگو و شخصی<br/>
-                        ویرایش تصویر و ویدئو<br/>
-                        زیر نویس و دوبله ویدئو ها<br/>
-                        آموزش حذف پس زمینه و حذف واتر مارک<br/>
-                        طراحی لوگو حرفه ای با هوش‌ مصنوعی<br/>
-                        آموزش حرفه ای اپلیکیشن های ادیت<br/>
-                        اینشات و کنوا ( inshot & canva )<br/>
-                    </p>
-                    <p className={"my-5 text-blue-600 text-xl"}>
-                        هدف دوره
-                    </p>
-                    <p className={"text-gray-500 leading-9"}>
-                        هدف اصلی دوره مسیر پولسازی با AI، آشنا کردن افراد با کاربردهای هوش مصنوعی در زمینه کسب درآمد و بهبود کسب و کارها است. این دوره به شما می‌آموزد که چگونه با استفاده از ابزارها و تکنیک‌های هوش مصنوعی، ایده‌های نوآورانه برای درآمدزایی پیدا کنید و کسب و کار خود را به سطح بالاتری ارتقا دهید. همچنین، شما خواهید آموخت که چگونه با بهره‌گیری از هوش مصنوعی، ارزش پیشنهادی کسب و کارتان را بهبود بخشید و مزیت رقابتی خود را در بازار افزایش دهید. این دوره بدون نیاز به هیچ پیش‌نیازی، شما را به دنیای کسب درآمد به کمک هوش مصنوعی وارد می‌کند و قابلیت‌های بی‌نظیر این فناوری را به شما نشان می‌دهد.
-                    </p>
-                    <p className={"my-5 text-blue-600 text-xl"}>
-                        برای چه کسانی مناسب است؟
-                    </p>
-                    <p className={"text-gray-500 leading-9"}>
-                        دوره پولسازان برای تمامی افرادی که علاقه‌مند به افزایش درآمد و بهبود کسب و کار خود هستند، مناسب است. اگر شما به دنبال راهکارهای نوین و کارآمد برای بهره‌مندی از هوش مصنوعی در کسب و کار خود هستید و می‌خواهید با تکنولوژی‌های پیشرفته هوش مصنوعی آشنا شوید، این دوره برای شما ایده‌آل است. همچنین، افرادی که قصد دارند مهارت‌های خود را در زمینه ایجاد ایده‌های جدید و بهبود مزیت رقابتی کسب و کار خود ارتقا دهند و از هوش مصنوعی به عنوان یک مربی و دستیار هوشمند استفاده کنند، می‌توانند از این دوره بهره‌مند شوند. علاوه بر این کسانی که به دنبال یادگیری حرفه ای تولید محتوا به کمک هوش مصنوعی هستند می توانند از این دوره استفاده کنند
+            {/* محتوای اصلی */}
+            <div className="w-full lg:w-[65%]">
+                <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+                    <img
+                        src={image || "/assets/1020269.jpg"}
+                        alt={title}
+                        className="w-full h-[300px] object-cover"
+                    />
+                    <div className="p-6 flex flex-col gap-8">
+                        <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
 
-                        این دوره مناسب است برای تمام کسانی که دوست دارند به دنیای کسب درآمد با هوش مصنوعی ورود کنند و در کار، تحصیل و زندگی خود پیشرفت کنند. با داشتن یک گوشی هوشمند و اتصال به اینترنت می توانید به راحتی این دوره رو شروع کنید.
-                    </p>
-                    <p className={"my-5 text-blue-600 text-xl"}>
-                        تدریس توسط متخصص
-                    </p>
-                    <p className={"text-gray-500 leading-9"}>
-                        این دوره توسط دکتر حسن زاده، که دکتری هوش مصنوعی از دانشگاه صنعتی شریف دارند، تدریس می‌شود. دکتر حسن زاده با تجربه و دانش فراوان خود در زمینه هوش مصنوعی، این دوره را با زبانی بسیار آسان و روان طراحی کرده‌اند تا شما را به دنیای کسب درآمد به کمک هوش مصنوعی وارد کنند. ضمنا بخشی از این دوره با تدریس استاد شمس الهدی که مدرس برجسته حوزه هوش مصنوعی هستند ارائه می شود. با شرکت در این دوره، شما از تجربه و دانش یک متخصص برجسته در زمینه هوش مصنوعی بهره‌مند خواهید شد و مهارت‌های خود را به سطح بالاتری ارتقا خواهید داد. این دوره، بدون نیاز به هیچ پیش‌نیازی، شما را با کاربردهای متنوع و گسترده هوش مصنوعی در زمینه کسب درآمد و بهبود کسب و کارها آشنا می‌کند. این دوره هیچ پیش نیاز علمی خاصی نیاز ندارد و به راحتی همه مطالب را از ابتدا توضیح می دهد.
-                    </p>
-                    <p className={"my-5 text-blue-600 text-xl"}>
-                        مزایای دوره
-                    </p>
-                    <p className={"text-gray-500 leading-9"}>
-                        این دوره چندین مزیت عالی دارد:<br/>
+                        {sections.map((section) => (
+                            <div key={section.title}>
+                                <h2 className="text-[16px] font-semibold text-emerald-600 mb-3 flex items-center gap-2">
+                                    <span className="w-1 h-5 bg-emerald-500 rounded-full inline-block"></span>
+                                    {section.title}
+                                </h2>
 
-                        1-  به صورت کاملا کاربردی و به زبان ساده بیان شده است<br/>
-
-                        2-  مدرس اصلی دوره دکتری هوش مصنوعی از دانشگاه صنعتی شریف دارد<br/>
-
-                        3-  دوره هیچ پیش نیاز علمی خاصی ندارد و به راحتی همه مطالب را از ابتدا توضیح می دهد.<br/>
-
-                        4- این دوره علاوه بر اینکه کاربرد هوش مصنوعی در ایجاد کسب و کار و درآمدزایی را آموزش می دهد کاربرد آن در امور مختلف و مهم زندگی مانند مشاوره، کسب مهارت و برنامه ریزی را نیز آموزش می دهد.<br/>
-
-                        5-  پس از پایان موفقیت آمیز دوره برای دریافت مدرک به وزارت علوم معرفی خواهید شد<br/>
-
-                        6- در طول دوره از پشتیبانی عالی که تحت نظارت مدرس است بهره مند خواهید شد.<br/>
-                    </p>
-                    <p className={"my-5 text-blue-600 text-xl"}>
-                        کلام آخر
-                    </p>
-                    <p className={"text-gray-500 leading-9"}>
-                        به این نکته خوب توجه کن که شاه کلید پیشرفت در دنیای مدرن امروزی، هوش مصنوعی است و اگر امروزه یادگرفتن هوش مصنوعی یک فرصت عالی برای ارتقاء باشد به زودی یاد گرفتن هوش مصنوعی تبدیل به یک ضرورت می شود.
-
-                        پس این فرصت ارزشمند را از دست نده و هر چه زودتر به صورت اصولی و حرفه ای با آموزش دقیق و کاربردی به این دنیای فوق العاده کاربردی و شگفت انگیز وارد شو.
-                    </p>
+                                {Array.isArray(section.content) ? (
+                                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        {section.content.map((item, i) => (
+                                            <li key={i} className="flex items-start gap-2 text-gray-500 text-[14px] leading-relaxed">
+                                                <span className="text-emerald-400 mt-1 shrink-0">✓</span>
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p className="text-gray-500 text-[14px] leading-8">{section.content}</p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
-            <div className={"w-[0%] lg:w-[30%] bg-white p-5 hidden lg:flex flex-col gap-15 h-[110vh]"}>
-                <div>
-                <p className={"text-[#00c896] text-lg my-5"}>
-                    {orginal_price}
-                </p>
-                <button className={"bg-[#1E88E5] w-full p-3 text-white rounded-xl"} onClick={() =>
-                    addToCart({
-                        id,
-                        title,
-                        price: Number(orginal_price.replace(/,/g, "")),
-                        image: image || "/assets/1020269.jpg",
-                    })
-                }>
-                    ثبت نام دوره
-                </button>
-                <div className={"mt-10 flex justify-between"}>
-                    <div>
-                        <p>{students}</p>
-                        <p>تعداد خرید دوره</p>
-                    </div>
-                    <div>
-                        محصول جدید
+
+            {/* سایدبار */}
+            <div className="hidden lg:flex w-[35%] flex-col gap-4">
+
+                {/* کارت قیمت */}
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sticky top-24">
+                    <div className="flex items-center justify-between mb-4">
+                        <span className="text-2xl font-bold text-emerald-600">
+                            {Number(orginal_price?.toString().replace(/,/g, "")).toLocaleString("fa-IR")} تومان
+                        </span>
+                        <span className="bg-orange-50 text-orange-500 text-[11px] font-medium px-3 py-1 rounded-full">
+                            محصول جدید
+                        </span>
                     </div>
 
-                </div>
-                <div className={"mt-8 text-sm border-b p-[10px] border-gray-300 flex justify-between"}>
-                    <p>نوع دوره:</p>
-                    <p>آفلاین</p>
-                </div>
-                <div className={" text-sm border-b p-[10px] border-gray-300 flex justify-between"}>
-                    <p>زمان دوره</p>
-                    <p>{time} ساعت</p>
-                </div>
-                <div className={" text-sm border-b p-[12px] border-gray-300 flex justify-between "}>
-                    <p>پیش نیاز:</p>
-                    <p>بدون پیش نیاز</p>
-                </div>
-                <div className={" text-sm border-b p-[12px] border-gray-300 flex justify-between "}>
-                    <p>تعداد جلسات : </p>
-                    <p>19 جلسه </p>
-                </div>
-                <div className={" text-sm border-b p-[12px] border-gray-300 flex justify-between "}>
-                    <p>روش پشتیبانی</p>
-                    <p>پیام رسان و تیکت </p>
-                </div>
-                <div className={" text-sm border-b p-[12px] border-gray-300 flex justify-between "}>
-                    <p>سطح برگزاری دوره</p>
-                    <p>مقدماتی </p>
-                </div>
-                <div className={" text-sm border-b p-[12px] border-gray-300 flex justify-between "}>
-                    <p>بستر برگزاری دوره</p>
-                    <p>اسپات پلیر </p>
-                </div>
-                <div className={"flex  justify-between mt-10"}>
-                    <div className={"flex flex-row "}>
-                        <img src={"/assets/تتتتت.jpg" } className={"w-[60px] rounded-full"}/>
-                        <p className={"content-center"}>مدرس</p>
+                    <button
+                        className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-medium text-[14px] transition-colors mb-4"
+                        onClick={() => addToCart({
+                            id,
+                            title,
+                            price: Number(orginal_price?.toString().replace(/,/g, "")),
+                            image: image || "/assets/1020269.jpg",
+                        })}
+                    >
+                        ثبت‌نام در دوره
+                    </button>
+
+                    <div className="flex items-center gap-2 text-gray-400 text-[13px] justify-center">
+                        <Users size={14} />
+                        <span>{students?.toLocaleString("fa-IR")} نفر در این دوره ثبت‌نام کرده‌اند</span>
                     </div>
-                    <p className={"h-[40px] mt-2 p-1 rounded-sm border content-center"}>مریم حسین زاده</p>
+
+                    {/* مشخصات دوره */}
+                    <div className="mt-5 flex flex-col divide-y divide-gray-100">
+                        {specs.map((spec) => (
+                            <div key={spec.label} className="flex justify-between items-center py-2.5 text-[13px]">
+                                <span className="text-gray-400 flex items-center gap-1.5">
+                                    {spec.icon}
+                                    {spec.label}
+                                </span>
+                                <span className="text-gray-700 font-medium">{spec.value}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* مدرس */}
+                    <div className="mt-5 pt-4 border-t border-gray-100">
+                        <p className="text-[12px] text-gray-400 mb-3">مدرس دوره</p>
+                        <div className="flex items-center gap-3">
+                            <img
+                                src="/assets/تتتتت.jpg"
+                                className="w-12 h-12 rounded-full object-cover border-2 border-emerald-100"
+                                alt="مدرس"
+                            />
+                            <div>
+                                <p className="font-medium text-[14px] text-gray-800">مریم حسن‌زاده</p>
+                                <p className="text-[12px] text-gray-400">دکترای هوش مصنوعی — دانشگاه صنعتی شریف</p>
+                            </div>
+                        </div>
+                        <p className="text-[13px] text-gray-500 leading-7 mt-3">
+                            ۱۰ سال سابقه کار در حوزه هوش مصنوعی و تدریس در دانشگاه‌های معتبر کشور
+                        </p>
+                    </div>
                 </div>
-                <p className={"mt-5"}>
-                    من مریم حسن زاده ، 10 سال سابقه کار در حوزه هوش مصنوعی و دکترای هوش مصنوعی از دانشگاه صنعتی شریف رو دارم.
-                </p>
-            </div>
             </div>
         </div>
     );
