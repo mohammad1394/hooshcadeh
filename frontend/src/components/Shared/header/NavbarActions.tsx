@@ -61,7 +61,7 @@ export default function NavbarActions() {
                     {!isLoggedIn ? (
                         <button
                             onClick={() => router.push("/signup")}
-                            className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white text-[13px] font-medium px-4 py-2 rounded-xl transition-colors"
+                            className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white text-[13px] font-medium px-4 py-3 rounded-xl transition-colors w-[150px]"
                         >
                             <CiUser size={18} />
                             <span>ورود / عضویت</span>

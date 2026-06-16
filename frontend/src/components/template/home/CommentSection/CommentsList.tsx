@@ -5,9 +5,14 @@ import Scrollbar from "@/components/Layout/Scrollbar/Scrollbar";
 import CommentCard from "@/components/modules/CommentCard/CommentCard";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 
+type ScrollbarRefType = {
+    scrollPrev: () => void;
+    scrollNext: () => void;
+};
+
 function CommentsList() {
 
-    const scrollbarRef = useRef(null);
+    const scrollbarRef = useRef<ScrollbarRefType | null>(null);
 
 
 

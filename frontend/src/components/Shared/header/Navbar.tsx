@@ -12,11 +12,18 @@ function Navbar() {
     ];
 
     return (
-        <header className="bg-[#0C447C] flex shadow w-full flex justify-between items-center  lg:h-[16vh]">
-            <div className="flex flex-col lg:flex-row justify-between w-full px-5 xl:w-[80%] mx-auto">
+        <header className="bg-[#0C447C]   justify-between items-center  lg:h-[16vh]">
+            <div className="flex flex-row-reverse lg:flex-row justify-between w-full px-5 xl:w-[80%] mx-auto">
 
-                <div className="flex justify-between w-full h-full justify-center items-center">
-                    <nav className="my-auto flex items-center gap-5 text-white">
+                <div className="flex justify-between w-full h-full items-center">
+                    <nav className="my-auto flex  items-center gap-5 text-white">
+                        <div className={"flex items-center justify-center self-cente mx-auto"}>
+                            <img
+                                src="/assets/hoshkadehlogo.png"
+                                alt="Logo"
+                                className="h-[200px] w-[200px] lg:h-[150px] lg:w-[200px] object-contain"
+                            />
+                        </div>
                         {menus.map((menu) => (
                             <Link
                                 href={menu.link}
@@ -26,15 +33,10 @@ function Navbar() {
                                 {menu.title}
                             </Link>
                         ))}
+
                     </nav>
 
-                    <div className={"flex items-center justify-center self-cente mx-auto"}>
-                        <img
-                            src="/assets/hoshkadehlogo.png"
-                            alt="Logo"
-                            className="h-[70px] w-[70px] lg:h-[150px] lg:w-[200px] object-contain"
-                        />
-                    </div>
+
                 </div>
 
                 <NavbarActions />

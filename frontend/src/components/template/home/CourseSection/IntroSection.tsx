@@ -5,7 +5,12 @@ import {Course} from "@/services/course";
 import {useRouter} from "next/navigation";
 import {Search, Sparkles} from "lucide-react";
 
-function IntroSection(courses: Course[]) {
+type Props = {
+    courses: Course[];
+}
+
+
+function IntroSection({courses} : Props) {
     const [search, setSearch] = useState("");
     const router = useRouter();
 
