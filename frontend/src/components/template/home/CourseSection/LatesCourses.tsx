@@ -29,7 +29,7 @@ function LatesCourses({ courses }: Props) {
         <Container>
             <div className="flex items-center gap-4 w-full mb-10">
                 <h2 className="shrink-0 text-[15px] md:text-[18px] font-bold text-[#1F2937]">
-                    محبوب ترین <span className="text-[#34D399]">دوره ها</span>
+                    آخرین  <span className="text-[#34D399]">دوره ها</span>
                 </h2>
 
                 <div className="flex-1 h-px bg-gray-300" />

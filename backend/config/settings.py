@@ -7,14 +7,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-SECRET_KEY = 'django-insecure-o_uby5^+=f0szq$lxty2kxf@@=p%+q)&!lp9d61e28%m6$!$z9'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-o_uby5^+=f0szq$lxty2kxf@@=p%+q)&!lp9d61e28%m6$!$z9")
 
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 # Application definition
 
@@ -142,7 +139,7 @@ LOGIN_REDIRECT_URL = 'pages:welcome'
 # django rest framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',  
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -153,27 +150,23 @@ REST_FRAMEWORK = {
 # ========== تنظیمات Simple JWT ==========
 SIMPLE_JWT = {
     # مدت اعتبار توکن دسترسی (Access Token)
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     # مدت اعتبار توکن رفرش (Refresh Token)
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),    
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
-<<<<<<< HEAD
-
 
 # ========== CORS ==========
 CORS_ALLOW_CREDENTIALS = True
 
-=======
->>>>>>> ad1ec6c (customize admin add ckeditor and change version python to 3.10)
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
     CORS_ALLOW_ALL_ORIGINS = False
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
+CORS_ALLOWED_ORIGINS = os.getenv(
+    "CORS_ALLOWED_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:3000"
+).split(",")
 
 JAZZMIN_SETTINGS = {
     "site_title": "پنل مدیریت",
@@ -183,7 +176,7 @@ JAZZMIN_SETTINGS = {
     "copyright": "2026",
     "show_sidebar": True,
     "navigation_expanded": True,
-    'custom_css':'css/admin.css'
+    'custom_css': 'css/admin.css'
 }
 CKEDITOR_5_CONFIGS = {
     "default": {
