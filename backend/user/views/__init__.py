@@ -4,5 +4,6 @@ from .login import LoginView
 from .login_verify_code import LoginVerifyCodeView
 from .resent_otp_code import ResentOtpCodeView
 from .teacher_detail import TeacherDetailView
+from .profile import ProfileDetailView
 
-__all__ = ['SignUpView', 'SignUpVerifyCodeView','LoginView','LoginVerifyCodeView','ResentOtpCodeView','TeacherDetailView']
+__all__ = ['SignUpView', 'SignUpVerifyCodeView','LoginView','LoginVerifyCodeView','ResentOtpCodeView','TeacherDetailView','ProfileDetailView']
