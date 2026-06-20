@@ -1,5 +1,4 @@
 "use client";
-
 import Container from "@/components/Layout/container/Container";
 import Link from "next/link";
 import { Course } from "@/services/course";
@@ -24,6 +23,7 @@ function LatesCourses({ courses }: Props) {
     };
 
     const latestCourses = sortByLatest(courses).slice(0, 8);
+
 
     return (
         <Container>
