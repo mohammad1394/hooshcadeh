@@ -5,6 +5,7 @@ import CourseCard from "@/components/Course/CourseCard/CourseCard";
 import Container from "@/components/Layout/container/Container";
 import Scrollbar, { ScrollbarRef } from "@/components/Layout/Scrollbar/Scrollbar";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import Link from 'next/link'
 
 type Props = {
     courses: Course[];
@@ -48,7 +49,11 @@ function PopularCourses({ courses }: Props) {
 
             <Scrollbar ref={scrollbarRef}>
                 {popularCourses.map((course: Course) => (
-                    <CourseCard {...course} key={course.id} />
+                    <Link key={course.id} href={`/courses/${course.slug}`}>
+                        <div className="px-2">
+                            <CourseCard {...course} />
+                        </div>
+                    </Link>
                 ))}
             </Scrollbar>
 

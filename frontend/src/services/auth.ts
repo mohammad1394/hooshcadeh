@@ -47,6 +47,27 @@ export type Profile = {
     full_name: string;
     purchased: number[];
 };
+// export interface Root {
+//     user: User
+//     description: string
+//     expertise: string
+//     resume: string
+//     website: string
+//     github: string
+//     instagram: string
+//     linkedin: string
+// }
+//
+// export interface User {
+//     id: number
+//     phone_number: string
+//     first_name: string
+//     last_name: string
+//     avatar: string
+//     full_name: string
+//     purchased: number[]
+// }
+
 
 export const signUp = (data: SignUpData): Promise<SignUpResponse> => {
     return api<SignUpResponse>("/auth/sign-up/", {
@@ -99,3 +120,9 @@ export const getProfile = (): Promise<Profile> => {
         method: "GET",
     });
 };
+
+// export const getTeacherInfo = (id :number): Promise<Root> => {
+//     return api<Root>(`/auth/teacher/${id}` , {
+//         method: "GET",
+//     })
+// }
