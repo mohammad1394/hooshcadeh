@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 type User = {
+    id: number;
     phone: string;
     first_name?: string;
 }
@@ -10,6 +11,7 @@ type User = {
 interface AuthContextType {
     isLoggedIn: boolean;
     user: User | null;
+    isInitialized: boolean;
     login: (data: { access: string; refresh: string; user: User }) => void;
     logout: () => void;
 }
@@ -19,6 +21,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState<User | null>(null);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("access");
@@ -28,6 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setIsLoggedIn(true);
             setUser(JSON.parse(userData));
         }
+        setIsInitialized(true);
     }, []);
 
     const login = ({ access, refresh, user }: {
@@ -50,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, login, logout , isInitialized }}>
             {children}
         </AuthContext.Provider>
     );

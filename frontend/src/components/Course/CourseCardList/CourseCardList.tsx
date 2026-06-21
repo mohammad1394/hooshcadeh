@@ -10,7 +10,10 @@ function CourseCardList({title , image , orginal_price , students , description 
                             <img src={image || "/assets/1020269.jpg"} alt={title} className={"rounded-xl"}/>
 
                             <p className='p-slideri'>{title}</p>
-                            <p className='line-clamp-2 text-gray-500 text-[16px]'>{description}</p>
+                            <div
+                                className='line-clamp-2 text-gray-500 text-[16px]'
+                                dangerouslySetInnerHTML={{ __html: description }}
+                            />
 
                         </div>
                         <div className={"flex flex-row gap-5 mt-5"}>

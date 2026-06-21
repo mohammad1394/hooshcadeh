@@ -22,6 +22,7 @@ function CourseTemplate({
                     alt={title}
                     className="w-full h-[160px] object-cover"
                 />
+                <p>سلام</p>
                 {level && (
                     <span className="absolute top-2.5 right-2.5 bg-emerald-50 text-emerald-700 text-[11px] font-medium px-3 py-1 rounded-full">
                         {level}
@@ -34,9 +35,10 @@ function CourseTemplate({
                 <p className="font-semibold text-[15px] leading-relaxed line-clamp-1 text-gray-900">
                     {title}
                 </p>
-                <p className="line-clamp-2 text-gray-400 text-[13px] leading-relaxed">
-                    {description}
-                </p>
+                <div
+                    className="line-clamp-2 text-gray-400 text-[13px] leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: description }}
+                />
 
                 {students ? (
                     <div className="flex items-center gap-1.5 text-gray-400 text-[12px]">

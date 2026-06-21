@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { getUserIdFromToken } from "@/lib/jwt";
 
 export type SignUpData = {
     phone_number: string;
@@ -37,6 +38,15 @@ export type AuthResponse = {
     access: string;
     refresh: string;
 };
+export type Profile = {
+    id: number;
+    phone_number: string;
+    first_name: string;
+    last_name: string;
+    avatar: string;
+    full_name: string;
+    purchased: number[];
+};
 
 export const signUp = (data: SignUpData): Promise<SignUpResponse> => {
     return api<SignUpResponse>("/auth/sign-up/", {
@@ -73,7 +83,19 @@ export const verifyLogin = (data: VerifyCodeData): Promise<AuthResponse> => {
 };
 
 export const resentCodeLogin = (): Promise<ResendCodeResponse> => {
-    return api<ResendCodeResponse>("/auth/login/resent-code/", {
+    return api<ResendCodeResponse>("/auth/resent/verify-code/", {
         method: "POST",
+    });
+};
+
+
+export const getProfile = (): Promise<Profile> => {
+    const userId = getUserIdFromToken();
+    if (!userId) {
+        return Promise.reject(new Error("توکن معتبر یافت نشد"));
+    }
+
+    return api<Profile>(`/auth/profile/${userId}/`, {
+        method: "GET",
     });
 };

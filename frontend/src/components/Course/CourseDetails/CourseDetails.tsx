@@ -18,7 +18,7 @@ function CourseDetails({ title, image, teacher, description, id, orginal_price, 
     ];
 
     const sections = [
-        { title: "درباره دوره", content: description },
+        { title: "درباره دوره", content: description, isHtml: true },
         {
             title: "سرفصل‌ها", content: [
                 "هوش مصنوعی چیست؟",
@@ -79,6 +79,11 @@ function CourseDetails({ title, image, teacher, description, id, orginal_price, 
                                             </li>
                                         ))}
                                     </ul>
+                                ) : section.isHtml ? (
+                                    <div
+                                        className="text-gray-500 text-[14px] leading-8"
+                                        dangerouslySetInnerHTML={{ __html: section.content as string }}
+                                    />
                                 ) : (
                                     <p className="text-gray-500 text-[14px] leading-8">{section.content}</p>
                                 )}
