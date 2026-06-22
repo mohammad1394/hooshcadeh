@@ -57,7 +57,7 @@ function Footer() {
             </div>
 
 
-            <div className="relative bg-gradient-to-b from-[#0f172a] via-[#101b33] to-[#0a1120] pt-20 sm:pt-24 pb-10 overflow-hidden">
+            <div className="relative bg-gradient-to-b from-[#0f172a] via-[#101b33] to-[#0a1120]  sm:pt-24 pb-10 overflow-hidden">
                 {/* ambient glows */}
                 <div className="pointer-events-none absolute -top-24 -left-24 w-72 h-72 rounded-full bg-teal-500/10 blur-3xl" />
                 <div className="pointer-events-none absolute bottom-0 right-0 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl translate-x-1/3 translate-y-1/3" />
@@ -122,37 +122,35 @@ function Footer() {
                                     className="w-[100px]"
                                 />
                             </div>
+                            <div className={"flex flex-row gap-5"}>
+                                <Link
+                                    href="https://web.eitaa.com/#@Draarezaie"
+                                    className="bg-[#C38E0A] flex items-center justify-center gap-2 col-span-1 lg:col-span-1 p-4 text-center rounded-lg transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
+                                >
+                                    <MessageCircle size={18} />
+
+                                </Link>
+
+                                <Link
+                                    href="telegram"
+                                    className="bg-gradient-to-tr from-[#0088cc] to-[#00aaff] flex items-center justify-center gap-2 col-span-1 lg:col-span-1 p-4 text-center rounded-lg transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                                >
+                                    <Send size={18} />
+
+                                </Link>
+                            </div>
                         </div>
                     </div>
+                        <hr className={"text-white"}/>
+                    <div className="flex flex-row justify-between">
+                        <p className="">
+                            © تمامی حقوق برای مجموعه «هوشکده» محفوظ می‌باشد |{" "}
 
-                    <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-5 mt-5">
-                        <p className="bg-white/5 border border-white/10 col-span-2 lg:col-span-3 text-[11px] sm:text-[13px] lg:text-[15px] p-4 rounded-lg leading-relaxed">
-                            © تمامی حقوق برای مجموعه «تکنو هوش» محفوظ می‌باشد | طراح سایت
+                        </p>
+                        <p>
+                            Designed & Developed by <span className="text-white font-medium">Mohammad Razaviyan</span>
                         </p>
 
-                        <Link
-                            href="https://web.eitaa.com/#@Draarezaie"
-                            className="bg-[#C38E0A] flex items-center justify-center gap-2 col-span-1 lg:col-span-1 p-4 text-center rounded-lg transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
-                        >
-                            <MessageCircle size={18} />
-                            <span>ایتا</span>
-                        </Link>
-
-                        <Link
-                            href="telegram"
-                            className="bg-gradient-to-tr from-[#0088cc] to-[#00aaff] flex items-center justify-center gap-2 col-span-1 lg:col-span-1 p-4 text-center rounded-lg transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
-                        >
-                            <Send size={18} />
-                            <span>تلگرام ما</span>
-                        </Link>
-
-                        <Link
-                            href="instagram"
-                            className="bg-gradient-to-tr from-[#feda75] via-[#d62976] to-[#4f5bd5] flex items-center justify-center gap-2 col-span-2 lg:col-span-1 p-4 text-center rounded-lg transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-300"
-                        >
-                            {/*<Instagram size={18} />*/}
-                            <span>اینستاگرام ما</span>
-                        </Link>
                     </div>
                 </div>
             </div>
