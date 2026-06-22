@@ -4,7 +4,7 @@ import Navbar from "@/components/Shared/header/Navbar";
 import {CartProvider} from "@/context/CartContext";
 import {AuthProvider} from "@/context/AuthContext";
 import localFont from "next/font/local";
-
+import { Toaster } from "react-hot-toast";
 
 const vazir = localFont({
     src: [
@@ -32,6 +32,7 @@ export default function RootLayout({children,}: {
         <body className={vazir.className}>
         <AuthProvider>
             <CartProvider>
+                <Toaster position="top-right" />
                 <Navbar/>
                 {children}
                 <Footer/>

@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "react-hot-toast";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type CartItem = {
@@ -24,49 +25,55 @@ const CartContext = createContext<CartContextType | null>(null);
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const [cart, setCart] = useState<CartItem[]>([]);
 
-
+    // Load cart
     useEffect(() => {
         const data = localStorage.getItem("cart");
-        if(data) {
+        if (data) {
             setCart(JSON.parse(data));
         }
     }, []);
 
-
+    // Save cart
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cart));
     }, [cart]);
 
-
+    // ADD TO CART (FIXED)
     const addToCart = (item: Omit<CartItem, "quantity">) => {
         const token = localStorage.getItem("access");
 
         if (!token) {
-            alert("اول وارد شو");
+            toast.error("اول وارد شو");
             return;
         }
 
-        setCart(prev => {
-            const exist = prev.find(p => p.id === item.id);
+        const exist = cart.find(p => p.id === item.id);
 
-            if (exist) {
-                return prev.map(p =>
-                    p.id === item.id
-                        ? { ...p, quantity: p.quantity + 1 }
-                        : p
-                );
-            }
+        if (exist) {
+            toast.error("این دوره قبلا به سبد خرید اضافه شده");
+            return;
+        }
 
-            return [...prev, { ...item, quantity: 1 }];
-        });
+        setCart(prev => [
+            ...prev,
+            { ...item, quantity: 1 }
+        ]);
+
+        toast.success("دوره به سبد خرید اضافه شد");
     };
 
-
+    // REMOVE
     const removeFromCart = (id: number) => {
-        setCart(prev => prev.filter(item => item.id !== id));
+        const item = cart.find(p => p.id === id);
+
+        setCart(prev => prev.filter(p => p.id !== id));
+
+        if (item) {
+            toast.success("از سبد خرید حذف شد");
+        }
     };
 
-
+    // INCREASE
     const increase = (id: number) => {
         setCart(prev =>
             prev.map(item =>
@@ -77,7 +84,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         );
     };
 
-
+    // DECREASE
     const decrease = (id: number) => {
         setCart(prev =>
             prev
@@ -90,6 +97,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         );
     };
 
+    // TOTAL PRICE
     const totalPrice = cart.reduce(
         (sum, item) => sum + item.price * item.quantity,
         0
@@ -97,15 +105,27 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <CartContext.Provider
-            value={{ cart, addToCart, removeFromCart, increase, decrease, totalPrice }}
+            value={{
+                cart,
+                addToCart,
+                removeFromCart,
+                increase,
+                decrease,
+                totalPrice,
+            }}
         >
             {children}
         </CartContext.Provider>
     );
 };
 
+// HOOK
 export const useCart = () => {
     const context = useContext(CartContext);
-    if (!context) throw new Error("useCart must be used inside provider");
+
+    if (!context) {
+        throw new Error("useCart must be used inside CartProvider");
+    }
+
     return context;
 };
