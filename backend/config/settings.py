@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'course.apps.CourseConfig',
     'pages.apps.PagesConfig',
+    'blog.apps.BlogConfig',
     'player',
     'payment',
     'rest_framework',
