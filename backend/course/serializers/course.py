@@ -9,6 +9,7 @@ class CourseSerializer(serializers.ModelSerializer):
     final_price = serializers.CharField(source='final_formatted_price', read_only=True)
     comments = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
+    teacher_full_name = serializers.CharField(source='teacher.user.full_name')
 
     class Meta:
         model = CourseModel
@@ -19,7 +20,7 @@ class CourseSerializer(serializers.ModelSerializer):
             'image',
             'description',
             'prerequisite',
-            'teacher',
+            'teacher_full_name',
             'category',
             'discount',
             'students',
@@ -30,6 +31,8 @@ class CourseSerializer(serializers.ModelSerializer):
             'level',
             'created_jalali',
             'updated_jalali',
+            'created',
+            'updated',
         ]
 
     def get_image(self, obj):
