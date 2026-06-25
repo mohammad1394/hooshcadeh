@@ -18,15 +18,14 @@ async function Page() {
                 <h5 className={"text-xl"}>جدیدترین مقالات آموزشی در تکنو هوش</h5>
                 </Container>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
             <Container>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 my-10">
                 {data.map((item: Blog) => (
-                        <ArticleCard {...item}  key={item.id} />
+                    <ArticleCard {...item} key={item.id} />
 
                 ))}
-            </Container>
             </div>
+            </Container>
         </div>
     );
 }

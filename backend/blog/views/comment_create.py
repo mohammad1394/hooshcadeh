@@ -6,3 +6,6 @@ from blog.serializers import CommentBlogWriteSerializer
 class CommentBlogCreateView(CreateAPIView):
     serializer_class = CommentBlogWriteSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

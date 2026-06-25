@@ -5,7 +5,7 @@
 
 
 
-    async function CourseTemplate({
+   function CourseTemplate({
                                 title,
                                 time,
                                 description,

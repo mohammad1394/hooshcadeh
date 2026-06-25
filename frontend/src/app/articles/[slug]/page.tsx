@@ -19,7 +19,7 @@ async function Page({params}: Props) {
                 <article className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm max-w-3xl mx-auto">
 
                     {/* تصویر هدر */}
-                    <div className="relative w-full h-72">
+                    <div className="relative w-full p-10">
                         <img
                             src={data.image}
                             alt={data.title}

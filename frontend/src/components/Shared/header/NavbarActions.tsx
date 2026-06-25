@@ -13,7 +13,9 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
 export default function NavbarActions() {
-    const { isLoggedIn, user, logout } = useAuth();
+    const { isLoggedIn, user, logout , isInitialized } = useAuth();
+    console.log("isInitialized:", isInitialized);
+    console.log("isLoggedIn:", isLoggedIn);
     const { cart } = useCart();
     const [menuIsOpen, setMenuOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +26,8 @@ export default function NavbarActions() {
         window.addEventListener("click", handler);
         return () => window.removeEventListener("click", handler);
     }, []);
+
+    if (!isInitialized) return null;
 
     return (
         <>

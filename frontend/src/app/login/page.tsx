@@ -5,6 +5,7 @@ import {getProfile, loginApi, resentCodeLogin, verifyLogin} from "@/services/aut
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import {toast} from "react-hot-toast";
 
 function formatTimer(secs: number) {
     const m = Math.floor(secs / 60);
@@ -46,33 +47,42 @@ export default function SignUp() {
             const res = await loginApi({ phone_number: number });
             if (res.success) setStep("verify");
         } catch {
-            setFormError("خطا در ارسال کد. دوباره تلاش کنید.");
+            setFormError("شما به تازگی کد ورود دریافت کرده اید چند دقیقه دیگر دوباره تلاش کنید.");
         } finally {
             setLoadingForm(false);
         }
     };
 
-    const handleVerify = async (code: string) => {
-        const res = await verifyLogin({ code }); // یا verifySignUp
+    const handleVerify = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoadingVerify(true);
+        setVerifyError("");
+        try {
+            const res = await verifyLogin({ code });
 
-        // توکن‌ها رو موقتاً ذخیره کن تا بتونیم پروفایل بگیریم
-        localStorage.setItem("access", res.access);
-        localStorage.setItem("refresh", res.refresh);
+            localStorage.setItem("access", res.access);
+            localStorage.setItem("refresh", res.refresh);
 
-        // حالا پروفایل کامل رو بگیر
-        const profile = await getProfile();
+            const profile = await getProfile();
 
-        login({
-            access: res.access,
-            refresh: res.refresh,
-            user: {
-                id: profile.id,
-                phone: profile.phone_number,
-                first_name: profile.first_name,
-            },
-        });
+            login({
+                access: res.access,
+                refresh: res.refresh,
+                user: {
+                    id: profile.id,
+                    phone: profile.phone_number,
+                    first_name: profile.first_name,
+                },
+            });
 
-        router.push("/panel");
+            toast.success("شما با موفقیت وارد شدید");
+            router.push("/");
+        } catch (err) {
+            console.log("verify error:", err);
+            setVerifyError("کد وارد شده اشتباه است.");
+        } finally {
+            setLoadingVerify(false);
+        }
     };
 
     const handleResend = async () => {
@@ -88,11 +98,6 @@ export default function SignUp() {
         <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
             <div className="w-full max-w-sm">
 
-                {/* Logo / Avatar */}
-                <div className="flex justify-center mb-6">
-
-                </div>
-
                 {/* Card */}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
 
@@ -100,7 +105,7 @@ export default function SignUp() {
                         <>
                             <div className="text-center mb-6">
                                 <h1 className="text-lg font-medium text-gray-900 mb-1">
-                                    ساخت حساب کاربری
+                                    ورود به حساب کاربری
                                 </h1>
                                 <p className="text-sm text-gray-500">
                                     شماره همراه خود را وارد کنید
@@ -108,7 +113,7 @@ export default function SignUp() {
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
+                            <div>
                                     <label
                                         htmlFor="phone"
                                         className="block text-xs text-gray-500 mb-1.5 text-right"

@@ -20,3 +20,5 @@ class CommentBlogWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentBlogModel
         fields = '__all__'
+        read_only_fields = ['user', 'status']
+
