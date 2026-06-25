@@ -12,16 +12,16 @@ function Navbar() {
     ];
 
     return (
-        <header className="bg-[#0C447C]   justify-between items-center  lg:h-[16vh]">
+        <header className="bg-[#0C447C]   justify-between items-center  lg:h-[20vh]">
             <div className="flex flex-row-reverse lg:flex-row justify-between w-full px-5 xl:w-[80%] mx-auto">
 
                 <div className="flex justify-between w-full h-full items-center">
-                    <nav className="my-auto flex  items-center gap-5 text-white">
-                        <div className={"flex items-center justify-center self-cente mx-auto"}>
+                    <nav className="flex  items-center gap-5 text-white">
+                        <div className={""}>
                             <img
                                 src="/assets/hoshkadehlogo.png"
                                 alt="Logo"
-                                className="h-[200px] w-[200px] lg:h-[150px] lg:w-[200px] object-contain"
+                                className="h-[200px] w-[200px] lg:h-[150px] lg:w-[200px] object-contain mx-auto"
                             />
                         </div>
                         {menus.map((menu) => (
