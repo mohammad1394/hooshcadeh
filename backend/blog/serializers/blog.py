@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from blog.models import BlogModel
+from django.conf import settings
 from .comment import CommentBlogReadSerializer
 
 
 class BlogSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     teacher_full_name = serializers.CharField(source='teacher.user.full_name')
+    image = serializers.SerializerMethodField()  # اضافه شد
 
     class Meta:
         model = BlogModel
@@ -23,7 +25,12 @@ class BlogSerializer(serializers.ModelSerializer):
             'created_jalali',
             'updated_jalali',
         ]
-    
+
+    def get_image(self, obj):  # اضافه شد
+        if obj.image:
+            return f"{settings.PUBLIC_MEDIA_BASE_URL}{obj.image.url}"
+        return None
+
     def get_comments(self, obj):
         approved_comments = obj.blog_comments.approved()
         comments_serializer = CommentBlogReadSerializer(approved_comments, many=True)
