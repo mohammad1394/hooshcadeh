@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { STORAGE_KEYS } from "@/constants/storage";
 
 type DecodedToken = {
     user_id: number;
@@ -8,7 +9,7 @@ type DecodedToken = {
 };
 
 export const getUserIdFromToken = (token?: string | null): number | null => {
-    const accessToken = token || localStorage.getItem("access");
+    const accessToken = token || localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
     if (!accessToken) return null;
 
     try {
