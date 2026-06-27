@@ -43,7 +43,7 @@ class CourseModel(models.Model):
         verbose_name='توضیحات دوره'
     )
     prerequisite = models.TextField(
-        verbose_name='توضیحات دوره',
+        verbose_name='پیش نیاز دوره',
         default='پیش نیاز ندارد'
     )
     teacher = models.ForeignKey(
@@ -82,6 +82,26 @@ class CourseModel(models.Model):
         max_length=1,
         choices=LEVEL_CHOICES,
         default='b'
+    )
+    course_target = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name='هدف دوره'
+    )
+    suitableـfor = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        verbose_name='مناسب برای'
+    )
+    benefits_of_the_course = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name='مزایای دوره'
+    )
+    number_of_sessions = models.PositiveIntegerField(
+        default=0,
+        verbose_name='تعداد جلسات'
     )
     is_published = models.BooleanField(
         default=False,
