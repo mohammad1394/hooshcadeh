@@ -2,6 +2,7 @@
 
 import { toast } from "react-hot-toast";
 import { createContext, useContext, useEffect, useState } from "react";
+import { STORAGE_KEYS } from "@/constants/storage";
 
 type CartItem = {
     id: number;
@@ -40,7 +41,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     // ADD TO CART (FIXED)
     const addToCart = (item: Omit<CartItem, "quantity">) => {
-        const token = localStorage.getItem("access");
+        const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 
         if (!token) {
             toast.error("اول وارد شو");
