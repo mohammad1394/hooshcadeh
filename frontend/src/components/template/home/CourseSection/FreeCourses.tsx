@@ -1,8 +1,8 @@
 import React from 'react';
-import {Course} from "@/services/course";
 import Container from "@/components/Layout/container/Container";
 import Link from "next/link";
 import CourseCard from "@/components/Course/CourseCard/CourseCard";
+import {Course} from "@/types/course";
 
 type Props = {
     courses: Course[];

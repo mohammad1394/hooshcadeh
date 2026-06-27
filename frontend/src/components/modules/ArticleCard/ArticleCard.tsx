@@ -1,16 +1,21 @@
 import React from 'react';
-import {Blog} from "@/services/blog";
+
 import Link from "next/link";
+import Image from "next/image";
+import {sanitizeHtml} from "@/lib/sanitize";
+import {Blog} from "@/types/blog";
 
 function ArticleCard({title, image, description, teacher_full_name, created_jalali, slug}: Blog) {
     return (
         <div className="bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col text-right hover:-translate-y-1 hover:shadow-md transition-all duration-200">
 
             <div className="relative h-[200px]">
-                <img
+                <Image
                     src={image}
                     alt={title}
                     className="w-full h-full object-cover"
+                    width={200}
+                    height={200}
                 />
                 <span className="absolute top-2 right-2 bg-white/15 backdrop-blur-sm text-white text-[11px] px-2.5 py-1 rounded-full">
                     مقاله
@@ -23,7 +28,7 @@ function ArticleCard({title, image, description, teacher_full_name, created_jala
                 </p>
                 <div
                     className="line-clamp-2 text-gray-400 text-[12px] leading-relaxed flex-1"
-                    dangerouslySetInnerHTML={{ __html: description || "" }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(description || "") }}
                 />
                 <div className="flex items-center justify-between pt-2.5 border-t border-gray-100">
                     <div className="flex items-center gap-1.5">

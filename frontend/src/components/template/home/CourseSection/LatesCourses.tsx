@@ -1,9 +1,10 @@
 "use client";
 import Container from "@/components/Layout/container/Container";
 import Link from "next/link";
-import { Course } from "@/services/course";
+
 import CourseCard from "@/components/Course/CourseCard/CourseCard";
 import React from "react";
+import {Course} from "@/types/course";
 
 type Props = {
     courses: Course[];
@@ -39,7 +40,7 @@ function LatesCourses({ courses }: Props) {
             <div className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}>
                 {latestCourses.map((course) => (
                     <Link key={course.id} href={`/courses/${course.slug}`}>
-                        <div className="px-2">
+                        <div className="px-2 w-full max-w-[400px] mx-auto">
                             <CourseCard {...course} />
                         </div>
                     </Link>

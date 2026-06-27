@@ -1,9 +1,11 @@
 "use client"
 import React, {useState} from "react";
 import Container from "@/components/Layout/container/Container";
-import {Course} from "@/services/course";
+
 import {useRouter} from "next/navigation";
 import {Search, Sparkles} from "lucide-react";
+import Image from "next/image";
+import {Course} from "@/types/course";
 
 type Props = {
     courses: Course[];
@@ -69,10 +71,12 @@ function IntroSection({courses} : Props) {
                 {/* Image */}
                 <div className="relative w-full md:w-1/2">
                     <div className="relative rounded-3xl bg-gradient-to-br from-orange-100 to-emerald-50 p-4 sm:p-6">
-                        <img
+                        <Image
                             src="/assets/banner.png"
                             className="w-full rounded-2xl object-cover"
                             alt="یادگیری هوش مصنوعی"
+                            width={500}
+                            height={500}
                         />
                     </div>
                 </div>

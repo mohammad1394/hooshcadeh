@@ -1,11 +1,13 @@
 "use client";
 import React, { useRef } from "react";
-import { Course } from "@/services/course";
+
 import CourseCard from "@/components/Course/CourseCard/CourseCard";
 import Container from "@/components/Layout/container/Container";
 import Scrollbar, { ScrollbarRef } from "@/components/Layout/Scrollbar/Scrollbar";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import Link from 'next/link'
+import Image from "next/image";
+import {Course} from "@/types/course";
 
 type Props = {
     courses: Course[];
@@ -50,7 +52,7 @@ function PopularCourses({ courses }: Props) {
             <Scrollbar ref={scrollbarRef}>
                 {popularCourses.map((course: Course) => (
                     <Link key={course.id} href={`/courses/${course.slug}`}>
-                        <div className="px-2">
+                        <div className="px-2 w-[325px] shrink-0">
                             <CourseCard {...course} />
                         </div>
                     </Link>
@@ -58,8 +60,18 @@ function PopularCourses({ courses }: Props) {
             </Scrollbar>
 
             <div className={"flex flex-col md:flex-row gap-5 my-40"}>
-                <img src={"/assets/instagram-banner.png"} alt="" className={"w-full md:w-[50%] rounded-xl"}/>
-                <img src={"/assets/telegram-banner.png"} alt="" className={"w-full md:w-[50%]"} />
+                <Image
+                    src={"/assets/instagram-banner.png"}
+                    alt="" className={"w-full md:w-[50%] rounded-xl"}
+                    width={400}
+                    height={400}
+                />
+                <Image
+                    src={"/assets/telegram-banner.png"}
+                    alt="" className={"w-full md:w-[50%]"}
+                    height={400}
+                    width={400}
+                />
             </div>
 
 

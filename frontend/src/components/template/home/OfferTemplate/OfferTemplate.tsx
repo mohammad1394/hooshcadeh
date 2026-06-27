@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 function OfferTemplate() {
 
 
@@ -9,7 +11,12 @@ function OfferTemplate() {
 
                 <p className={"text-white text-[20px] font-bold mb-10"}>پیشنهاد ویژه برای شروع حرفه ای</p>
                 <div className="flex gap-10 flex-col md:flex-row bg-[#373D49] p-7 rounded-2xl border border-white ">
-                    <img src="/assets/0251848748.webp" alt="" className={"w-[100%] md:w-[40%] rounded-2xl"} />
+                    <Image
+                        src="/assets/0251848748.webp"
+                        alt="" className={"w-[100%] md:w-[40%] rounded-2xl"}
+                        width={200}
+                        height={200}
+                    />
                     <div className={"flex flex-col gap-5 mt-2"}>
                         <h2 className={"text-white text-2xl"}>هوش مصنوعی جامع 6</h2>
                         <bdi className={"text-[#00c896] text-xl"}>۲۰,۹۱۵,۰۰۰ تومان</bdi>
