@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Phone, Mail, Send, MessageCircle } from "lucide-react";
+import Image from "next/image";
 
 const quickAccess = [
     { title: "تماس با ما", link: "/contactus" },
@@ -116,10 +117,12 @@ function Footer() {
                         <div className="col-span-2 lg:col-span-1 flex flex-col gap-5 items-center lg:items-end text-center lg:text-right">
                             <p className="text-lg font-semibold">مجوز ها</p>
                             <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-                                <img
-                                    src="/assets/logo.png"
+                                <Image
+                                    src="/assets/namad.png"
                                     alt="نماد اعتماد"
                                     className="w-[100px]"
+                                    width={100}
+                                    height={100}
                                 />
                             </div>
                             <div className={"flex flex-row gap-5"}>

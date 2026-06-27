@@ -1,5 +1,6 @@
 import Link from "next/link";
 import NavbarActions from "./NavbarActions";
+import Image from "next/image";
 
 function Navbar() {
 
@@ -18,10 +19,12 @@ function Navbar() {
                 <div className="flex justify-between w-full h-full items-center">
                     <nav className="flex  items-center gap-5 text-white">
                         <div className={""}>
-                            <img
+                            <Image
                                 src="/assets/hoshkadehlogo.png"
                                 alt="Logo"
                                 className="h-[200px] w-[200px] lg:h-[150px] lg:w-[200px] object-contain mx-auto"
+                                width={200}
+                                height={200}
                             />
                         </div>
                         {menus.map((menu) => (
