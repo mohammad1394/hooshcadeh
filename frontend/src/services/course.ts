@@ -1,24 +1,7 @@
 import {api} from "./api";
+import {Course} from "@/types/course";
 
-export type Course = {
-    id: number;
-    title: string;
-    slug: string;
-    image: string | null;
-    description: string;
-    prerequisite: string;
-    teacher: number;
-    category: number;
-    discount: number;
-    students: number;
-    orginal_price: number;
-    final_price: string;
-    comments: any[];
-    time: number;
-    level: "b" | "i" | "a";
-    created_jalali: string;
-    updated_jalali: string;
-};
+
 
 
 
@@ -28,12 +11,8 @@ export const  getCourses = () => {
     });
 }
 
-
-
-
 export const getCourseSlug = (slug : string)=> {
     return api<Course>(`/course/${slug}/` ,{
         method: "GET",
-        }
-        )
+        })
 }
