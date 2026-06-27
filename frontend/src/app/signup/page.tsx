@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { resentCodeSignUp, signUp, verifySignUp } from "@/services/auth";
+import { resendVerifyCode, signUp, verifySignUp, getProfile } from "@/services/auth";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
 function formatTimer(secs: number) {
@@ -13,6 +14,7 @@ function formatTimer(secs: number) {
 
 export default function SignUp() {
     const router = useRouter();
+    const { login } = useAuth();
 
     const [step, setStep] = useState<"form" | "verify">("form");
     const [code, setCode] = useState("");
@@ -65,8 +67,8 @@ export default function SignUp() {
         try {
             const res = await verifySignUp({ code });
             if (res.success) {
-                localStorage.setItem("access", res.access);
-                localStorage.setItem("refresh", res.refresh);
+                const profile = await getProfile();
+                login({ access: res.access, refresh: res.refresh }, profile);
                 router.push("/");
             }
         } catch {
@@ -78,7 +80,7 @@ export default function SignUp() {
 
     const handleResend = async () => {
         try {
-            const res = await resentCodeSignUp();
+            const res = await resendVerifyCode();
             if (res.success) setTimer(180);
         } catch {
             setVerifyError("خطا در ارسال مجدد کد.");
@@ -88,11 +90,7 @@ export default function SignUp() {
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
             <div className="w-full max-w-sm">
-
-
-                {/* Card */}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-
                     {step === "form" ? (
                         <>
                             <div className="text-center mb-6">
@@ -105,12 +103,8 @@ export default function SignUp() {
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                {/* First name */}
                                 <div>
-                                    <label
-                                        htmlFor="first_name"
-                                        className="block text-xs text-gray-500 mb-1.5 text-right"
-                                    >
+                                    <label htmlFor="first_name" className="block text-xs text-gray-500 mb-1.5 text-right">
                                         نام
                                     </label>
                                     <input
@@ -125,12 +119,8 @@ export default function SignUp() {
                                     />
                                 </div>
 
-                                {/* Last name */}
                                 <div>
-                                    <label
-                                        htmlFor="last_name"
-                                        className="block text-xs text-gray-500 mb-1.5 text-right"
-                                    >
+                                    <label htmlFor="last_name" className="block text-xs text-gray-500 mb-1.5 text-right">
                                         نام خانوادگی
                                     </label>
                                     <input
@@ -145,12 +135,8 @@ export default function SignUp() {
                                     />
                                 </div>
 
-                                {/* Phone */}
                                 <div>
-                                    <label
-                                        htmlFor="phone_number"
-                                        className="block text-xs text-gray-500 mb-1.5 text-right"
-                                    >
+                                    <label htmlFor="phone_number" className="block text-xs text-gray-500 mb-1.5 text-right">
                                         شماره همراه
                                     </label>
                                     <input
@@ -165,9 +151,7 @@ export default function SignUp() {
                                         required
                                     />
                                     {formError && (
-                                        <p className="text-xs text-red-500 mt-1.5 text-right">
-                                            {formError}
-                                        </p>
+                                        <p className="text-xs text-red-500 mt-1.5 text-right">{formError}</p>
                                     )}
                                 </div>
 
@@ -204,10 +188,7 @@ export default function SignUp() {
 
                             <form onSubmit={handleVerify} className="space-y-4">
                                 <div>
-                                    <label
-                                        htmlFor="code"
-                                        className="block text-xs text-gray-500 mb-1.5 text-right"
-                                    >
+                                    <label htmlFor="code" className="block text-xs text-gray-500 mb-1.5 text-right">
                                         کد تایید
                                     </label>
                                     <input
@@ -223,13 +204,10 @@ export default function SignUp() {
                                         required
                                     />
                                     {verifyError && (
-                                        <p className="text-xs text-red-500 mt-1.5 text-right">
-                                            {verifyError}
-                                        </p>
+                                        <p className="text-xs text-red-500 mt-1.5 text-right">{verifyError}</p>
                                     )}
                                 </div>
 
-                                {/* Timer / Resend */}
                                 <div className="text-center">
                                     {timer > 0 ? (
                                         <p className="text-xs text-gray-400">
@@ -257,14 +235,9 @@ export default function SignUp() {
                                     {loadingVerify ? "در حال بررسی..." : "تایید و ورود"}
                                 </button>
 
-                                {/* Back to edit info */}
                                 <button
                                     type="button"
-                                    onClick={() => {
-                                        setStep("form");
-                                        setCode("");
-                                        setVerifyError("");
-                                    }}
+                                    onClick={() => { setStep("form"); setCode(""); setVerifyError(""); }}
                                     className="w-full border border-gray-200 text-gray-500 text-xs py-2 rounded-xl hover:bg-gray-50 transition"
                                 >
                                     ویرایش اطلاعات

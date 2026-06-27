@@ -5,7 +5,13 @@ import {CartProvider} from "@/context/CartContext";
 import {AuthProvider} from "@/context/AuthContext";
 import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
+import {ErrorBoundary} from "@/components/Shared/shared/ErrorBoundary";
 
+
+export const metadata = {
+    title: "هوشکده",
+    description: "پلتفرم آموزش هوش مصنوعی",
+};
 const vazir = localFont({
     src: [
         {
@@ -24,21 +30,20 @@ const vazir = localFont({
 export default function RootLayout({children,}: {
     children: React.ReactNode
 }) {
-
-
-
     return (
         <html lang="fa">
         <body className={vazir.className}>
         <AuthProvider>
             <CartProvider>
                 <Toaster position="top-right" />
-                <Navbar/>
-                {children}
-                <Footer/>
+                <Navbar />
+                <ErrorBoundary>
+                    {children}
+                </ErrorBoundary>
+                <Footer />
             </CartProvider>
         </AuthProvider>
         </body>
         </html>
-    )
+    );
 }

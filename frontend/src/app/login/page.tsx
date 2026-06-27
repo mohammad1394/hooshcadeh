@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {getProfile, loginApi, resentCodeLogin, verifyLogin} from "@/services/auth";
+import { getProfile, login as loginApi, verifyLogin, resendVerifyCode } from "@/services/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 function formatTimer(secs: number) {
     const m = Math.floor(secs / 60);
@@ -13,7 +13,7 @@ function formatTimer(secs: number) {
     return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-export default function SignUp() {
+export default function LoginPage() {
     const { login } = useAuth();
     const router = useRouter();
 
@@ -47,7 +47,7 @@ export default function SignUp() {
             const res = await loginApi({ phone_number: number });
             if (res.success) setStep("verify");
         } catch {
-            setFormError("شما به تازگی کد ورود دریافت کرده اید چند دقیقه دیگر دوباره تلاش کنید.");
+            setFormError("شما به تازگی کد ورود دریافت کرده‌اید. چند دقیقه دیگر دوباره تلاش کنید.");
         } finally {
             setLoadingForm(false);
         }
@@ -59,26 +59,11 @@ export default function SignUp() {
         setVerifyError("");
         try {
             const res = await verifyLogin({ code });
-
-            localStorage.setItem("access", res.access);
-            localStorage.setItem("refresh", res.refresh);
-
             const profile = await getProfile();
-
-            login({
-                access: res.access,
-                refresh: res.refresh,
-                user: {
-                    id: profile.id,
-                    phone: profile.phone_number,
-                    first_name: profile.first_name,
-                },
-            });
-
+            login({ access: res.access, refresh: res.refresh }, profile);
             toast.success("شما با موفقیت وارد شدید");
             router.push("/");
-        } catch (err) {
-            console.log("verify error:", err);
+        } catch {
             setVerifyError("کد وارد شده اشتباه است.");
         } finally {
             setLoadingVerify(false);
@@ -87,7 +72,7 @@ export default function SignUp() {
 
     const handleResend = async () => {
         try {
-            const res = await resentCodeLogin();
+            const res = await resendVerifyCode();
             if (res.success) setTimer(180);
         } catch {
             setVerifyError("خطا در ارسال مجدد کد.");
@@ -97,10 +82,7 @@ export default function SignUp() {
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
             <div className="w-full max-w-sm">
-
-                {/* Card */}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-
                     {step === "form" ? (
                         <>
                             <div className="text-center mb-6">
@@ -113,30 +95,23 @@ export default function SignUp() {
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
-                                    <label
-                                        htmlFor="phone"
-                                        className="block text-xs text-gray-500 mb-1.5 text-right"
-                                    >
+                                <div>
+                                    <label htmlFor="phone" className="block text-xs text-gray-500 mb-1.5 text-right">
                                         شماره همراه
                                     </label>
-                                    <div className="relative">
-                                        <input
-                                            id="phone"
-                                            name="phone_number"
-                                            type="tel"
-                                            placeholder="09xxxxxxxxx"
-                                            dir="ltr"
-                                            className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-right placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition"
-                                            value={number}
-                                            onChange={(e) => setNumber(e.target.value)}
-                                            required
-                                        />
-                                    </div>
+                                    <input
+                                        id="phone"
+                                        name="phone_number"
+                                        type="tel"
+                                        placeholder="09xxxxxxxxx"
+                                        dir="ltr"
+                                        className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-right placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition"
+                                        value={number}
+                                        onChange={(e) => setNumber(e.target.value)}
+                                        required
+                                    />
                                     {formError && (
-                                        <p className="text-xs text-red-500 mt-1.5 text-right">
-                                            {formError}
-                                        </p>
+                                        <p className="text-xs text-red-500 mt-1.5 text-right">{formError}</p>
                                     )}
                                 </div>
 
@@ -150,9 +125,9 @@ export default function SignUp() {
                             </form>
 
                             <p className="text-center text-xs text-gray-400 mt-5">
-                                هنوز ثبت نام نکرده اید؟{" "}
+                                هنوز ثبت‌نام نکرده‌اید؟{" "}
                                 <Link href="/signup" className="text-blue-500 hover:underline">
-                                    ثبت نام
+                                    ثبت‌نام
                                 </Link>
                             </p>
                         </>
@@ -164,7 +139,7 @@ export default function SignUp() {
                                 </h1>
                                 <p className="text-sm text-gray-500">
                                     کد ارسال‌شده به{" "}
-                                    <span className="font-medium text-gray-700 dir-ltr inline-block">
+                                    <span className="font-medium text-gray-700 inline-block" dir="ltr">
                                         {number}
                                     </span>{" "}
                                     را وارد کنید
@@ -173,10 +148,7 @@ export default function SignUp() {
 
                             <form onSubmit={handleVerify} className="space-y-4">
                                 <div>
-                                    <label
-                                        htmlFor="code"
-                                        className="block text-xs text-gray-500 mb-1.5 text-right"
-                                    >
+                                    <label htmlFor="code" className="block text-xs text-gray-500 mb-1.5 text-right">
                                         کد تایید
                                     </label>
                                     <input
@@ -192,13 +164,10 @@ export default function SignUp() {
                                         required
                                     />
                                     {verifyError && (
-                                        <p className="text-xs text-red-500 mt-1.5 text-right">
-                                            {verifyError}
-                                        </p>
+                                        <p className="text-xs text-red-500 mt-1.5 text-right">{verifyError}</p>
                                     )}
                                 </div>
 
-                                {/* Timer / Resend */}
                                 <div className="text-center">
                                     {timer > 0 ? (
                                         <p className="text-xs text-gray-400">
@@ -226,14 +195,9 @@ export default function SignUp() {
                                     {loadingVerify ? "در حال بررسی..." : "تایید و ورود"}
                                 </button>
 
-                                {/* Back to change number */}
                                 <button
                                     type="button"
-                                    onClick={() => {
-                                        setStep("form");
-                                        setCode("");
-                                        setVerifyError("");
-                                    }}
+                                    onClick={() => { setStep("form"); setCode(""); setVerifyError(""); }}
                                     className="w-full border border-gray-200 text-gray-500 text-xs py-2 rounded-xl hover:bg-gray-50 transition"
                                 >
                                     تغییر شماره همراه

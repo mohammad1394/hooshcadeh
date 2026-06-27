@@ -1,8 +1,9 @@
 import React from 'react';
 import Container from "@/components/Layout/container/Container";
-import {Blog, getBlogSlug} from "@/services/blog";
+import {getBlogSlug} from "@/services/blog";
 import Image from "next/image";
 import CommentSection from "@/components/modules/CommentSection/CommentSection";
+import {Blog} from "@/types/blog";
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -20,10 +21,12 @@ async function Page({params}: Props) {
 
                     {/* تصویر هدر */}
                     <div className="relative w-full p-10">
-                        <img
+                        <Image
                             src={data.image}
                             alt={data.title}
                             className="object-cover w-full h-full"
+                            width={200}
+                            height={200}
                         />
                     </div>
 

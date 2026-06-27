@@ -2,6 +2,7 @@
 
 import { useCart } from "@/context/CartContext";
 import Container from "@/components/Layout/container/Container";
+import Image from "next/image";
 
 export default function CartPage() {
     const { cart, increase, decrease, removeFromCart, totalPrice } = useCart();
@@ -16,10 +17,12 @@ export default function CartPage() {
                         key={item.id}
                         className="flex flex-col sm:flex-row items-center gap-4 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm"
                     >
-                        <img
+                        <Image
                             src={item.image}
                             alt={item.title}
                             className="w-20 h-20 object-cover rounded-xl"
+                            width={200}
+                            height={200}
                         />
 
                         <div className="flex-1 w-full text-center sm:text-right">

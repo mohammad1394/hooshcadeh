@@ -5,18 +5,12 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { getProfile } from "@/services/auth";
-import {Course, getCourses} from "@/services/course";
+import { getCourses} from "@/services/course";
+import Image from "next/image";
+import {Course} from "@/types/course";
+import {Profile} from "@/types/auth";
 
 
-type Profile = {
-    id: number;
-    phone_number: string;
-    first_name: string;
-    last_name: string;
-    avatar: string;
-    full_name: string;
-    purchased: number[];
-};
 
 function MyCoursesPage() {
     const { isLoggedIn, logout, isInitialized } = useAuth();
@@ -170,10 +164,12 @@ function MyCoursesPage() {
                                 <div className="h-32 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-3xl relative">
                                     {course.image ? (
                                         // eslint-disable-next-line @next/next/no-img-element
-                                        <img
+                                        <Image
                                             src={course.image}
                                             alt={course.title}
                                             className="w-full h-full object-cover"
+                                            width={200}
+                                            height={200}
                                         />
                                     ) : (
                                         "🎓"
