@@ -1,9 +1,10 @@
 
     import React from "react";
-    import { Course } from "@/services/course";
     import { Users } from "lucide-react";
-
-
+    import {Course} from "@/types/course";
+    import Image from "next/image";
+    import {sanitizeHtml} from "@/lib/sanitize";
+    import DOMPurify from "dompurify";
 
    function CourseTemplate({
                                 title,
@@ -15,15 +16,17 @@
                                 teacher,
                                 level
                             }: Course) {
-
+        console.log("Image url =>" , image);
         return (
             <div className="text-right bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col mb-5">
 
                 <div className="relative">
-                    <img
+                    <Image
                         src={image || "/assets/1020269.jpg"}
                         alt={title}
-                        className="w-full h-[160px] object-cover"
+                        className="w-full h-[150px] object-cover"
+                        width={500}
+                        height={150}
                     />
                     {level && (
                         <span className="absolute top-2.5 right-2.5 bg-emerald-50 text-emerald-700 text-[11px] font-medium px-3 py-1 rounded-full">
@@ -39,7 +42,7 @@
                     </p>
                     <div
                         className="line-clamp-2 text-gray-400 text-[13px] leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: description }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
                     />
 
                     {students ? (

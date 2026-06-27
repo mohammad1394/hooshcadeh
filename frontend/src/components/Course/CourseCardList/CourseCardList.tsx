@@ -1,5 +1,8 @@
 import React from 'react';
-import {Course} from "@/services/course";
+
+import Image from "next/image";
+import {sanitizeHtml} from "@/lib/sanitize";
+import {Course} from "@/types/course";
 
 
 function CourseCardList({title , image , orginal_price , students , description  , teacher } : Course) {
@@ -7,12 +10,18 @@ function CourseCardList({title , image , orginal_price , students , description 
                 <div  className="text-right  shadow transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                     <div className="bg-white p-3">
                         <div className='flex flex-col gap-4'>
-                            <img src={image || "/assets/1020269.jpg"} alt={title} className={"rounded-xl"}/>
+                            <Image
+                                src={image || "/assets/1020269.jpg"}
+                                alt={title}
+                                className={"rounded-xl"}
+                                height={200}
+                                width={200}
+                            />
 
                             <p className='p-slideri'>{title}</p>
                             <div
                                 className='line-clamp-2 text-gray-500 text-[16px]'
-                                dangerouslySetInnerHTML={{ __html: description }}
+                                dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
                             />
 
                         </div>
