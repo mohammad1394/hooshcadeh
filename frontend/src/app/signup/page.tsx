@@ -50,6 +50,7 @@ export default function SignUp() {
         e.preventDefault();
         setFormError("");
         setLoadingForm(true);
+        console.log("sending:", form); // add this
         try {
             const res = await signUp(form);
             if (res.success) setStep("verify");

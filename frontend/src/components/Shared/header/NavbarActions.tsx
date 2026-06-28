@@ -56,9 +56,9 @@ export default function NavbarActions() {
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-                                className="flex items-center gap-2 cursor-pointer bg-white/10 hover:bg-white/20 text-[13px] font-medium px-4 py-2 rounded-xl transition-colors border border-white/20"
+                                className="flex items-center gap-2 cursor-pointer bg-white/10 hover:bg-white/20 text-[13px] font-medium px-4 py-2 w-40 rounded-xl transition-colors border border-white/20"
                             >
-                                <span>{user?.first_name  || "کاربر"}</span>
+                                <span>{user?.full_name  || "کاربر"}</span>
                             </button>
                             <UserMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
                         </>

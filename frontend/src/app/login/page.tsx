@@ -59,13 +59,15 @@ export default function LoginPage() {
         setVerifyError("");
         try {
             const res = await verifyLogin({ code });
-            const profile = await getProfile();
+            const profile = await getProfile(res.access);
             login({ access: res.access, refresh: res.refresh }, profile);
             toast.success("شما با موفقیت وارد شدید");
             router.push("/");
-        } catch {
-            setVerifyError("کد وارد شده اشتباه است.");
-        } finally {
+
+        } catch (error) {
+            console.error(error);
+        }
+        finally {
             setLoadingVerify(false);
         }
     };
