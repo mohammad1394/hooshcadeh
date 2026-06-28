@@ -3,7 +3,8 @@ import React, {useEffect, useState} from 'react';
 import Container from "@/components/Layout/container/Container";
 import CourseDetails from "@/components/Course/CourseDetails/CourseDetails";
 import {useParams} from "next/navigation";
-import {Course, getCourseSlug} from "@/services/course";
+import {getCourseSlug} from "@/services/course";
+import {Course} from "@/types/course";
 
 
 function Page() {

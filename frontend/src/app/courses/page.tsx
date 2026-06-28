@@ -2,7 +2,8 @@ import React from "react";
 import CourseCardList from "@/components/Course/CourseCardList/CourseCardList";
 import Container from "@/components/Layout/container/Container";
 import Link from "next/link";
-import { getCourses, Course } from "@/services/course";
+import { getCourses } from "@/services/course";
+import {Course} from "@/types/course";
 
 type Props = {
     searchParams: Promise<{ search?: string }>;
@@ -10,7 +11,7 @@ type Props = {
 
 export default async function Page({ searchParams }: Props) {
     const { search = "" } = await searchParams;
-    const courses = await getCourses();
+    const courses:Course[] = await getCourses();
 
     const filteredCourses = search.trim()
         ? courses.filter((course: Course) =>
@@ -25,7 +26,7 @@ export default async function Page({ searchParams }: Props) {
                     {search.trim() ? `نتایج جستجو برای: ${search}` : "دوره ها"}
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center justify-center">
                     {filteredCourses.length > 0 ? (
                         filteredCourses.map((course) => (
                             <Link key={course.id} href={`/courses/${course.slug}`}>
@@ -33,7 +34,7 @@ export default async function Page({ searchParams }: Props) {
                             </Link>
                         ))
                     ) : (
-                        <p>دوره‌ای پیدا نشد ❌</p>
+                        <p className={""}>نتیجه ایی یافت نشد</p>
                     )}
                 </div>
             </Container>
