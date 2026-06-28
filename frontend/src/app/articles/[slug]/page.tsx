@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from "@/components/Layout/container/Container";
-import {getBlogSlug} from "@/services/blog";
+import {createBlogComment, getBlogSlug} from "@/services/blog";
 import Image from "next/image";
 import CommentSection from "@/components/modules/CommentSection/CommentSection";
 import {Blog} from "@/types/blog";
@@ -62,10 +62,12 @@ async function Page({params}: Props) {
                         />
 
                     </div>
+                    <hr/>
                     <div className="px-8 pb-8 rtl">
                         <CommentSection
-                            blogId={data.id}
-                            comments={data.comments || []}
+                            id={data.id}
+                            comments={data.comments}
+                            type= "blog"
                         />
                     </div>
                 </article>
