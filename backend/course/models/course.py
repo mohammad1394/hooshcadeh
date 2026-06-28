@@ -99,6 +99,11 @@ class CourseModel(models.Model):
         blank=True,
         verbose_name='مزایای دوره'
     )
+    headline = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name='سرفصل های دوره'
+    )
     number_of_sessions = models.PositiveIntegerField(
         default=0,
         verbose_name='تعداد جلسات'

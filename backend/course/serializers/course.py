@@ -33,6 +33,7 @@ class CourseSerializer(serializers.ModelSerializer):
             'course_target',
             'suitableـfor',
             'benefits_of_the_course',
+            'headline',
             'number_of_sessions',
             'created_jalali',
             'updated_jalali',
