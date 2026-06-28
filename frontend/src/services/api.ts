@@ -111,7 +111,8 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
 
     const data = await res.json();
     if (!res.ok) {
-        throw new Error(data.message || data.detail || "خطایی رخ داد");
+        console.log("API Error response:", data); // add this
+        throw new Error(data.message || data.detail || JSON.stringify(data) || "خطایی رخ داد");
     }
 
     return data;
