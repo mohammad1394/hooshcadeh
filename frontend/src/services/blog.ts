@@ -15,12 +15,12 @@ export const getBlogSlug = (slug : string) => {
             method: "GET",
         })
 }
-export const createBlogComment = (body: string, blogId: number) => {
+export const createBlogComment = (body: string, Id: number) => {
     return api('/blog/comment/create/', {
         method: 'POST',
         body: JSON.stringify({
             body,
-            blog: blogId,
+            blog: Id,
             status: 'p',
             parent: null,
         }),

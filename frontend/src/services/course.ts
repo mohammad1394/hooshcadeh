@@ -16,3 +16,25 @@ export const getCourseSlug = (slug : string)=> {
         method: "GET",
         })
 }
+export const createCourseComment = (body: string, id: number) => {
+    return api("/course/comment/", {
+        method: "POST",
+        body: JSON.stringify({
+            body,
+            course: id,
+            status: "p",
+            parent: null,
+        }),
+    });
+};
+// export const createCourseComment = (body : string , id : number ) => {
+//     return api<Course>(`/course/comment`, {
+//         method: "POST",
+//         body: JSON.stringify({
+//             body ,
+//             courseId: id,
+//             status: 'p',
+//             parent: null,
+//         }),
+//     })
+// }

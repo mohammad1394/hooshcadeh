@@ -3,6 +3,7 @@
 
 import React, {useState} from 'react';
 import {createBlogComment} from "@/services/blog";
+import {createCourseComment} from "@/services/course";
 
 interface Comment {
     id: number;
@@ -12,11 +13,12 @@ interface Comment {
 }
 
 interface Props {
-    blogId: number;
+    id: number;
     comments: Comment[];
+    type : "blog" | "course"
 }
 
-function CommentSection({blogId, comments}: Props) {
+function CommentSection({ id , type , comments}: Props) {
     const [body, setBody] = useState('');
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -27,7 +29,14 @@ function CommentSection({blogId, comments}: Props) {
         setLoading(true);
         setError('');
         try {
-            await createBlogComment(body, blogId);
+            switch (type){
+                case "blog":
+                    await createBlogComment(body, id);
+                    break;
+                case "course":
+                    await createCourseComment(body, id);
+            }
+
             setSuccess(true);
             setBody('');
         } catch {
