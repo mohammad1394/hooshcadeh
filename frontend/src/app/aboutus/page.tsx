@@ -4,8 +4,8 @@ import Container from "@/components/Layout/container/Container";
 
 function Page() {
     return (
-        <div className={"bg-[#1C1732]"}>
-            <Container className={"text-center flex flex-col gap-4 py-20 text-white text-[16px] whitespace-pre-wrap"}>
+        <div className={"bg-[#1C1732] "}>
+            <Container className={"text-center flex flex-col gap-4 py-30 text-white text-[16px] whitespace-pre-wrap"}>
                 <h2 className={"text-[#00c896] text-4xl mb-8 "}>
                     آموزش <span className={"text-[#1E88E5]"}>هوش مصنوعی</span> را به ما بسپارید
                 </h2>

@@ -18,7 +18,7 @@ const siteSections = [
 
 function Footer() {
     return (
-        <footer className="relative mt-32 text-white" dir="rtl">
+        <footer className="relative  text-white" dir="rtl">
 
             <div className="absolute top-0 right-0 left-0 -translate-y-[calc(100%-1px)] overflow-hidden leading-[0] pointer-events-none">
                 <svg

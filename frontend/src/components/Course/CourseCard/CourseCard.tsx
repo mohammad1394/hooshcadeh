@@ -4,7 +4,6 @@
     import {Course} from "@/types/course";
     import Image from "next/image";
     import {sanitizeHtml} from "@/lib/sanitize";
-    import DOMPurify from "dompurify";
 
    function CourseTemplate({
                                 title,
@@ -16,7 +15,7 @@
                                 teacher,
                                 level
                             }: Course) {
-        console.log("Image url =>" , image);
+
         return (
             <div className="text-right bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col mb-5">
 

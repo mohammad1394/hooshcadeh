@@ -8,7 +8,7 @@ export default function CartPage() {
     const { cart, increase, decrease, removeFromCart, totalPrice } = useCart();
 
     return (
-        <div className="w-full max-w-3xl mx-auto px-4 py-10">
+        <div className="w-full max-w-3xl mx-auto px-4 pt-10 pb-50 ">
             <h1 className="text-2xl font-semibold mb-6">سبد خرید</h1>
 
             <div className="flex flex-col gap-4">

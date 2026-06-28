@@ -7,14 +7,14 @@ import { Course } from "@/types/course";
 function CourseDetails(course: Course) {
     return (
         <main className="min-h-screen bg-gray-50" dir="rtl">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-35">
 
                 <div className="my-16 flex gap-8 text-right">
 
-                    {/* محتوای اصلی */}
+                    {/* main content */}
                     <CourseContent {...course} />
 
-                    {/* سایدبار */}
+                    {/* sidebar */}
                     <CourseSidebar {...course} />
 
                 </div>

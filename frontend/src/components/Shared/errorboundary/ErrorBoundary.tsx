@@ -1,4 +1,4 @@
-// src/components/shared/ErrorBoundary.tsx
+// src/components/errorboundary/ErrorBoundary.tsx
 "use client";
 
 import { Component, ReactNode } from "react";

@@ -72,7 +72,7 @@ function PanelPage() {
 
     if (!isInitialized) {
         return (
-            <div className="min-h-screen flex flex-col gap-3 justify-center items-center text-gray-400">
+            <div className="min-h-screen py-25 flex flex-col gap-3 justify-center items-center text-gray-400">
                 <div className="w-8 h-8 border-2 border-gray-200 border-t-[#1D4ED8] rounded-full animate-spin" />
                 در حال بارگذاری...
             </div>
@@ -89,7 +89,7 @@ function PanelPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#F5F7FB] flex" dir="rtl">
+        <div className="min-h-screen pb-30 bg-[#F5F7FB] flex" dir="rtl">
 
             {/* ---------- Sidebar ---------- */}
             <aside className="w-[260px] bg-white border-l border-gray-100 p-6 hidden md:flex flex-col gap-1">

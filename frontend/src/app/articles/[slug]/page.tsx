@@ -15,7 +15,7 @@ async function Page({params}: Props) {
     const data: Blog = await getBlogSlug(decodedSlug);
 
     return (
-        <div className="bg-[#f5f4f0] min-h-screen py-10">
+        <div className="bg-[#f5f4f0] min-h-screen py-30">
             <Container>
                 <article className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm max-w-3xl mx-auto">
 

@@ -5,8 +5,8 @@ import {CartProvider} from "@/context/CartContext";
 import {AuthProvider} from "@/context/AuthContext";
 import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
-import {ErrorBoundary} from "@/components/Shared/shared/ErrorBoundary";
-
+import {ErrorBoundary} from "@/components/Shared/errorboundary/ErrorBoundary";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const metadata = {
     title: "هوشکده",
@@ -26,6 +26,14 @@ const vazir = localFont({
         },
     ],
 });
+// const queryClient = new QueryClient({
+//     defaultOptions: {
+//         queries: {
+//             staleTime: 1000 * 60 * 5,  // داده ۵ دقیقه تازه بمونه
+//             retry: 1,                   // اگه خطا داد یه بار دیگه تلاش کنه
+//         },
+//     },
+// });
 
 export default function RootLayout({children,}: {
     children: React.ReactNode
@@ -33,7 +41,8 @@ export default function RootLayout({children,}: {
     return (
         <html lang="fa">
         <body className={vazir.className}>
-        <AuthProvider>
+
+          <AuthProvider>
             <CartProvider>
                 <Toaster position="top-right" />
                 <Navbar />
@@ -42,7 +51,7 @@ export default function RootLayout({children,}: {
                 </ErrorBoundary>
                 <Footer />
             </CartProvider>
-        </AuthProvider>
+          </AuthProvider>
         </body>
         </html>
     );

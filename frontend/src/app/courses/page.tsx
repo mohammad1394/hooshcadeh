@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: Props) {
         : courses;
 
     return (
-        <div className="my-20">
+        <div className="my-35">
             <Container>
                 <h2 className="text-2xl my-6">
                     {search.trim() ? `نتایج جستجو برای: ${search}` : "دوره ها"}

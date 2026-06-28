@@ -11,7 +11,7 @@ export const  getCourses = () => {
     });
 }
 
-export const getCourseSlug = (slug : string)=> {
+export const getCourseBySlug = (slug : string)=> {
     return api<Course>(`/course/${slug}/` ,{
         method: "GET",
         })
@@ -27,14 +27,3 @@ export const createCourseComment = (body: string, id: number) => {
         }),
     });
 };
-// export const createCourseComment = (body : string , id : number ) => {
-//     return api<Course>(`/course/comment`, {
-//         method: "POST",
-//         body: JSON.stringify({
-//             body ,
-//             courseId: id,
-//             status: 'p',
-//             parent: null,
-//         }),
-//     })
-// }
