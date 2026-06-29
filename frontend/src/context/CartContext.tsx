@@ -8,6 +8,7 @@ type CartItem = {
     id: number;
     title: string;
     price: number;
+    slug: string;
     image: string;
     quantity: number;
 };
@@ -16,8 +17,6 @@ type CartContextType = {
     cart: CartItem[];
     addToCart: (item: Omit<CartItem, "quantity">) => void;
     removeFromCart: (id: number) => void;
-    increase: (id: number) => void;
-    decrease: (id: number) => void;
     totalPrice: number;
 };
 
@@ -44,7 +43,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 
         if (!token) {
-            toast.error("اول وارد شو");
+            toast.error("اول وارد شوید");
             return;
         }
 
@@ -74,33 +73,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
-    // INCREASE
-    const increase = (id: number) => {
-        setCart(prev =>
-            prev.map(item =>
-                item.id === id
-                    ? { ...item, quantity: item.quantity + 1 }
-                    : item
-            )
-        );
-    };
-
-    // DECREASE
-    const decrease = (id: number) => {
-        setCart(prev =>
-            prev
-                .map(item =>
-                    item.id === id
-                        ? { ...item, quantity: item.quantity - 1 }
-                        : item
-                )
-                .filter(item => item.quantity > 0)
-        );
-    };
-
     // TOTAL PRICE
     const totalPrice = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+        (sum, item) => sum + item.price ,
         0
     );
 
@@ -110,8 +85,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 cart,
                 addToCart,
                 removeFromCart,
-                increase,
-                decrease,
                 totalPrice,
             }}
         >

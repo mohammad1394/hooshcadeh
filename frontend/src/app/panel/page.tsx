@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { getProfile } from "@/services/auth";
+import {toast} from "react-hot-toast";
 
 type Profile = {
     id: number;
@@ -34,6 +35,7 @@ function PanelPage() {
 
     useEffect(() => {
         if (isInitialized && !isLoggedIn) {
+            toast.error("لطفا اول وارد شوید")
             router.push("/login");
         }
     }, [isInitialized, isLoggedIn]);

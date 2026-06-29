@@ -37,7 +37,16 @@ function SidebarMenu({ menuState, toggleMenu }: Props) {
                             خانه
                         </li>
                     </Link>
-
+                    <Link href="/courses" onClick={toggleMenu}>
+                        <li className="cursor-pointer hover:bg-indigo-500 p-2 rounded transition">
+                            دوره ها
+                        </li>
+                    </Link>
+                    <Link href="/articles" onClick={toggleMenu}>
+                        <li className="cursor-pointer hover:bg-indigo-500 p-2 rounded transition">
+                            مقالات
+                        </li>
+                    </Link>
                     <Link href="/aboutus" onClick={toggleMenu}>
                         <li className="cursor-pointer hover:bg-indigo-500 p-2 rounded transition">
                             درباره ما

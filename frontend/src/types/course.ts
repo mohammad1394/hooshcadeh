@@ -18,6 +18,7 @@ export type Course = {
     course_target: string
     suitableـfor: string
     benefits_of_the_course: string
+    "headline": string
     number_of_sessions: number
     created_jalali: string
     updated_jalali: string

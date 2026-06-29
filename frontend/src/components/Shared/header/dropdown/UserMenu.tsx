@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, ShoppingBasket, LogOut } from "lucide-react";
+import {LayoutDashboard, ShoppingBasket, LogOut} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
@@ -35,6 +35,7 @@ function UserMenu({ isOpen, onClose }: UserMenuProps) {
                 <p className="text-[12px] text-gray-400">خوش آمدید</p>
                 <p className="text-[13px] font-medium text-gray-800 truncate">
                     {user?.first_name  || "کاربر"}
+
                 </p>
             </div>
 

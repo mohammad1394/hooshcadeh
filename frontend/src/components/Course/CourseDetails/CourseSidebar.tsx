@@ -18,7 +18,8 @@ function CourseSidebar({
                            level,
                            prerequisite,
                            number_of_sessions,
-                           discount
+                           discount,
+                           slug
                        }: Course) {
     const {addToCart} = useCart();
     const [teacherInfo, setTeacherInfo] = useState<Teacher | null>(null);
@@ -29,7 +30,6 @@ function CourseSidebar({
             try {
                 const res = await getTeacherInfo(Number(teacher));
                 setTeacherInfo(res);
-                console.log(res);
             } catch (err) {
                 console.log(err);
             }
@@ -84,8 +84,9 @@ function CourseSidebar({
                     onClick={() => addToCart({
                         id,
                         title,
-                        price: Number(orginal_price?.toString().replace(/,/g, "")),
-                        image: image,
+                        price:   (Number(orginal_price?.toString().replace(/,/g, "")) * (1 - discount / 100)),
+                        image,
+                        slug,
                     })}
                 >
                     ثبت‌نام در دوره

@@ -7,7 +7,7 @@ function Navbar() {
     const menus = [
         { link: "/", title: "خانه" },
         { link: "/courses", title: "دوره ها" },
-        { link: "/articles", title: "وبلاگ" },
+        { link: "/articles", title: "مقالات" },
         { link: "/contactus", title: "ارتباط با ما" },
         { link: "/aboutus", title: "درباره ما" }
     ];

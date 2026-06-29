@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, User } from "lucide-react";
+import {ChevronDown, ChevronUp, Menu, User} from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import SidebarMenu from "@/components/Shared/header/SidebarMenu";
@@ -56,9 +56,11 @@ export default function NavbarActions() {
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-                                className="flex items-center gap-2 cursor-pointer bg-white/10 hover:bg-white/20 text-[13px] font-medium px-4 py-2 w-40 rounded-xl transition-colors border border-white/20"
+                                className="flex items-center gap-2 cursor-pointer bg-white/10 hover:bg-white/20 text-[13px] font-medium px-4 py-2 w-45 rounded-xl transition-colors border border-white/20"
                             >
                                 <span>{user?.full_name  || "کاربر"}</span>
+                                {isOpen ? <ChevronUp />  : <ChevronDown /> }
+
                             </button>
                             <UserMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
                         </>
