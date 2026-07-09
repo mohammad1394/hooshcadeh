@@ -1,14 +1,22 @@
-import {api} from "@/services/api";
+import {api, isDynamicServerUsageError} from "@/services/api";
 import {Blog} from "@/types/blog";
 
 
 
 
 
-export const getBlogs = () => {
-    return api<Blog[]>("/blog" ,{
-        method: "GET",
+export const getBlogs = async () => {
+    try {
+        return await api<Blog[]>("/blog" ,{
+            method: "GET",
         });
+    } catch (error) {
+        if (isDynamicServerUsageError(error)) {
+            throw error;
+        }
+        console.error("Failed to load blogs", error);
+        return [];
+    }
 }
 export const getBlogSlug = (slug : string) => {
         return api<Blog>(`/blog/${slug}/`, {

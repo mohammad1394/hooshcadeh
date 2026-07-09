@@ -1,14 +1,22 @@
-import {api} from "./api";
+import {api, isDynamicServerUsageError} from "./api";
 import {Course} from "@/types/course";
 
 
 
 
 
-export const  getCourses = () => {
-    return api<Course[]>("/course/", {
-        method: "GET",
-    });
+export const  getCourses = async () => {
+    try {
+        return await api<Course[]>("/course/", {
+            method: "GET",
+        });
+    } catch (error) {
+        if (isDynamicServerUsageError(error)) {
+            throw error;
+        }
+        console.error("Failed to load courses", error);
+        return [];
+    }
 }
 
 export const getCourseBySlug = (slug : string)=> {

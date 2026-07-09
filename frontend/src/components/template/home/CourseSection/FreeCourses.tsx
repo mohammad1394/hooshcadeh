@@ -10,7 +10,6 @@ type Props = {
 function FreeCourses({ courses }: Props) {
 
     const freeCourses = courses.filter(course => course.final_price === "0");
-    console.log(freeCourses);
 
     return (
         <Container>

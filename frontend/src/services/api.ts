@@ -13,6 +13,12 @@ const getBaseUrl = () =>
         ? process.env.API_URL_INTERNAL || process.env.NEXT_PUBLIC_API_URL || "http://backend:8000"
         : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+export const isDynamicServerUsageError = (err: unknown) =>
+    err instanceof Error && (
+        err.message.includes("Dynamic server usage") ||
+        (err as Error & { digest?: string }).digest === "DYNAMIC_SERVER_USAGE"
+    );
+
 const buildHeaders = (url: string, options?: RequestInit): HeadersInit => {
     const isServer = typeof window === "undefined";
     const token = isServer ? null : storage.getAccessToken();
@@ -65,7 +71,7 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
             credentials: "include",
         });
     } catch (err) {
-        if (err instanceof Error && err.message.includes("Dynamic server usage")) {
+        if (isDynamicServerUsageError(err)) {
             throw err;
         }
         throw new Error(`خطا در اتصال به سرور: ${fullUrl} - ${err}`);
@@ -93,7 +99,7 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
                 credentials: "include",
             });
         } catch (err) {
-            if (err instanceof Error && err.message.includes("Dynamic server usage")) {
+            if (isDynamicServerUsageError(err)) {
                 throw err;
             }
             throw new Error(`خطا در اتصال به سرور هنگام تلاش مجدد: ${err}`);

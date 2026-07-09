@@ -8,7 +8,6 @@ async function Page() {
     const data:Blog[] = await getBlogs()
 
 
-    console.log(data)
     return (
         <div className={"my-35"}>
 
