@@ -68,7 +68,7 @@ export default function NotFound() {
 
                 <div className="flex items-center justify-center gap-3 mt-7">
                     <Link
-                        href="/"
+                        href="/frontend/public"
                         className="px-6 py-2.5 rounded-xl bg-[#1D4ED8] text-white text-sm font-medium hover:bg-[#1742b8] transition-colors shadow-sm"
                     >
                         بازگشت به خانه

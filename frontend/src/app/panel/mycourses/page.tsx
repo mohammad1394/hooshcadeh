@@ -1,21 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { getProfile } from "@/services/auth";
-import { getCourses} from "@/services/course";
+import { getCourses } from "@/services/course";
 import Image from "next/image";
-import {Course} from "@/types/course";
-import {Profile} from "@/types/auth";
-
-
+import { Course } from "@/types/course";
+import { Profile } from "@/types/auth";
+import SidebarPanel from "@/components/modules/SidebarPanel/SidebarPanel";
 
 function MyCoursesPage() {
-    const { isLoggedIn, logout, isInitialized } = useAuth();
+    const { isLoggedIn, logout, isInitialized, accessToken } = useAuth();
     const router = useRouter();
-    const pathname = usePathname();
 
     const [profile, setProfile] = useState<Profile | null>(null);
     const [myCourses, setMyCourses] = useState<Course[]>([]);
@@ -36,8 +34,13 @@ function MyCoursesPage() {
                 setLoading(true);
                 setError(null);
 
+                if (!accessToken) {
+                    throw new Error("Access token is missing");
+                    router.push("/login");
+                }
                 const [profileData, allCourses] = await Promise.all([
-                    getProfile(),
+
+                    getProfile(accessToken),
                     getCourses(),
                 ]);
 
@@ -66,45 +69,11 @@ function MyCoursesPage() {
     }
     if (!isLoggedIn) return null;
 
-    const navItems = [
-        { label: "داشبورد", path: "/panel" },
-        { label: "دوره‌های من", path: "/panel/courses" }
-    ];
+    const displayName = profile?.full_name || profile?.phone_number || "کاربر";
+    const initial = displayName.trim().charAt(0) || "ک";
 
     return (
         <div className="min-h-screen bg-[#F5F7FB] flex" dir="rtl">
-
-            {/* ---------- Sidebar ---------- */}
-            <aside className="w-[260px] bg-white border-l border-gray-100 p-6 hidden md:flex flex-col gap-1">
-                <h2 className="text-sm font-bold text-gray-900 mb-6">پنل کاربری</h2>
-
-                <nav className="flex flex-col gap-1">
-                    {navItems.map((item) => {
-                        const active = pathname === item.path;
-                        return (
-                            <button
-                                key={item.path}
-                                onClick={() => router.push(item.path)}
-                                className={`text-right px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                                    active
-                                        ? "bg-[#EFF4FF] text-[#1D4ED8]"
-                                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                                }`}
-                            >
-                                {item.label}
-                            </button>
-                        );
-                    })}
-                </nav>
-
-                <button
-                    onClick={logout}
-                    className="text-right px-4 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 mt-auto"
-                >
-                    خروج از حساب
-                </button>
-            </aside>
-
             {/* ---------- Main content ---------- */}
             <main className="flex-1 p-6 md:p-8 max-w-5xl">
 
@@ -163,7 +132,6 @@ function MyCoursesPage() {
                             >
                                 <div className="h-32 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-3xl relative">
                                     {course.image ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
                                         <Image
                                             src={course.image}
                                             alt={course.title}
@@ -189,7 +157,7 @@ function MyCoursesPage() {
                                         {course.discount > 0 ? (
                                             <span className="flex items-center gap-1.5">
                                                 <span className="text-[11px] text-gray-300 line-through">
-                                                    {formatPrice(course.orginal_price)}
+                                                    {formatPrice(Number((course.orginal_price)))}
                                                 </span>
                                                 <span className="text-xs font-bold text-emerald-600">
                                                     {formatPrice(Number(course.final_price))}
