@@ -82,7 +82,7 @@ function PanelPage() {
     }
     if (!isLoggedIn) return null;
 
-    const displayName = profile?.full_name || profile?.phone_number || user?.phone || "کاربر";
+    const displayName = profile?.full_name || profile?.phone_number || user?.phone_number || "کاربر";
     const initial = displayName.trim().charAt(0) || "ک";
 
     const navItems = [

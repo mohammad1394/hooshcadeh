@@ -1,7 +1,8 @@
 import React from 'react';
 import Container from "@/components/Layout/container/Container";
 import ArticleCard from "@/components/modules/ArticleCard/ArticleCard";
-import {Blog, getBlogs} from "@/services/blog";
+import {getBlogs} from "@/services/blog";
+import {Blog} from "@/types/blog";
 
 async function LatestArticle() {
 

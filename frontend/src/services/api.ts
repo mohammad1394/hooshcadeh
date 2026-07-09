@@ -61,11 +61,15 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
     let res: Response;
     try {
         res = await fetch(fullUrl, {
+            cache: "no-store",
             ...options,
             headers: buildHeaders(url, options),
             credentials: "include",
         });
     } catch (err) {
+        if (err instanceof Error && err.message.includes("Dynamic server usage")) {
+            throw err;
+        }
         throw new Error(`خطا در اتصال به سرور: ${fullUrl} - ${err}`);
     }
 
@@ -82,6 +86,7 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
         let retryRes: Response;
         try {
             retryRes = await fetch(fullUrl, {
+                cache: "no-store",
                 ...options,
                 headers: {
                     ...buildHeaders(url, options),
@@ -90,6 +95,9 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
                 credentials: "include",
             });
         } catch (err) {
+            if (err instanceof Error && err.message.includes("Dynamic server usage")) {
+                throw err;
+            }
             throw new Error(`خطا در اتصال به سرور هنگام تلاش مجدد: ${err}`);
         }
 

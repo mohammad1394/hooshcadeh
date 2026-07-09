@@ -189,7 +189,7 @@ function MyCoursesPage() {
                                         {course.discount > 0 ? (
                                             <span className="flex items-center gap-1.5">
                                                 <span className="text-[11px] text-gray-300 line-through">
-                                                    {formatPrice(course.orginal_price)}
+                                                    {formatPrice(Number(course.orginal_price))}
                                                 </span>
                                                 <span className="text-xs font-bold text-emerald-600">
                                                     {formatPrice(Number(course.final_price))}

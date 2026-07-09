@@ -68,7 +68,7 @@ export default function SignUp() {
         try {
             const res = await verifySignUp({ code });
             if (res.success) {
-                const profile = await getProfile();
+                const profile = await getProfile(res.access);
                 login({ access: res.access, refresh: res.refresh }, profile);
                 router.push("/");
             }
