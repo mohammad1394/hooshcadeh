@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
@@ -33,12 +33,22 @@ function PanelPage() {
     const [loading, setLoading] = useState(true);
     const [cartCount, setCartCount] = useState(0);
 
+    const readCart = useCallback(() => {
+        try {
+            const raw = localStorage.getItem("cart");
+            const items: CartItem[] = raw ? JSON.parse(raw) : [];
+            setCartCount(items.length);
+        } catch {
+            setCartCount(0);
+        }
+    }, []);
+
     useEffect(() => {
         if (isInitialized && !isLoggedIn) {
             toast.error("لطفا اول وارد شوید")
             router.push("/login");
         }
-    }, [isInitialized, isLoggedIn]);
+    }, [isInitialized, isLoggedIn, router]);
 
     useEffect(() => {
         if (!isInitialized || !isLoggedIn) return;
@@ -55,22 +65,12 @@ function PanelPage() {
         };
 
         fetchProfile();
-        readCart();
+        queueMicrotask(readCart);
 
 
         window.addEventListener("storage", readCart);
         return () => window.removeEventListener("storage", readCart);
-    }, [isInitialized, isLoggedIn]);
-
-    const readCart = () => {
-        try {
-            const raw = localStorage.getItem("cart");
-            const items: CartItem[] = raw ? JSON.parse(raw) : [];
-            setCartCount(items.length);
-        } catch {
-            setCartCount(0);
-        }
-    };
+    }, [isInitialized, isLoggedIn, readCart]);
 
     if (!isInitialized) {
         return (

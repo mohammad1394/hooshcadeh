@@ -6,7 +6,6 @@ import {AuthProvider} from "@/context/AuthContext";
 import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
 import {ErrorBoundary} from "@/components/Shared/errorboundary/ErrorBoundary";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const metadata = {
     title: "هوشکده",

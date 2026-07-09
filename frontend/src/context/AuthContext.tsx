@@ -20,14 +20,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        const token = storage.getAccessToken();
-        const userData = storage.getUser();
+        const initializeAuth = () => {
+            const token = storage.getAccessToken();
+            const userData = storage.getUser();
 
-        if (token && userData) {
-            setIsLoggedIn(true);
-            setUser(userData);
-        }
-        setIsInitialized(true);
+            if (token && userData) {
+                setIsLoggedIn(true);
+                setUser(userData);
+            }
+            setIsInitialized(true);
+        };
+
+        queueMicrotask(initializeAuth);
     }, []);
 
     const login = (tokens: AuthTokens, user: User) => {

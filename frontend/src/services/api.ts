@@ -10,7 +10,7 @@ const noAuthUrls = [
 
 const getBaseUrl = () =>
     typeof window === "undefined"
-        ? process.env.API_URL_INTERNAL || "http://backend:8000"
+        ? process.env.API_URL_INTERNAL || process.env.NEXT_PUBLIC_API_URL || "http://backend:8000"
         : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const buildHeaders = (url: string, options?: RequestInit): HeadersInit => {
@@ -55,8 +55,6 @@ const refreshAccessToken = async (): Promise<string | null> => {
 export async function api<T>(url: string, options?: RequestInit): Promise<T> {
     const baseUrl = getBaseUrl();
     const fullUrl = `${baseUrl}/api${url}`;
-
-    console.log(`[api] ${options?.method || "GET"} ${fullUrl}`);
 
     let res: Response;
     try {
@@ -119,7 +117,6 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
 
     const data = await res.json();
     if (!res.ok) {
-        console.log("API Error response:", data); // add this
         throw new Error(data.message || data.detail || JSON.stringify(data) || "خطایی رخ داد");
     }
 

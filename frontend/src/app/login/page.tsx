@@ -27,11 +27,6 @@ export default function LoginPage() {
     const [verifyError, setVerifyError] = useState("");
 
     useEffect(() => {
-        if (step !== "verify") return;
-        setTimer(180);
-    }, [step]);
-
-    useEffect(() => {
         if (timer === 0 || step !== "verify") return;
         const interval = setInterval(() => {
             setTimer((prev) => prev - 1);
@@ -45,7 +40,10 @@ export default function LoginPage() {
         setLoadingForm(true);
         try {
             const res = await loginApi({ phone_number: number });
-            if (res.success) setStep("verify");
+            if (res.success) {
+                setTimer(180);
+                setStep("verify");
+            }
         } catch {
             setFormError("شما به تازگی کد ورود دریافت کرده‌اید. چند دقیقه دیگر دوباره تلاش کنید.");
         } finally {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from "@/components/Layout/container/Container";
-import {createBlogComment, getBlogSlug} from "@/services/blog";
+import {getBlogSlug} from "@/services/blog";
 import Image from "next/image";
 import CommentSection from "@/components/modules/CommentSection/CommentSection";
 import {Blog} from "@/types/blog";

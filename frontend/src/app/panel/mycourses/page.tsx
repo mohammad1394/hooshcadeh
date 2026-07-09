@@ -8,7 +8,6 @@ import { getProfile } from "@/services/auth";
 import { getCourses} from "@/services/course";
 import Image from "next/image";
 import {Course} from "@/types/course";
-import {Profile} from "@/types/auth";
 
 
 
@@ -17,7 +16,6 @@ function MyCoursesPage() {
     const router = useRouter();
     const pathname = usePathname();
 
-    const [profile, setProfile] = useState<Profile | null>(null);
     const [myCourses, setMyCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -26,7 +24,7 @@ function MyCoursesPage() {
         if (isInitialized && !isLoggedIn) {
             router.push("/login");
         }
-    }, [isInitialized, isLoggedIn]);
+    }, [isInitialized, isLoggedIn, router]);
 
     useEffect(() => {
         if (!isInitialized || !isLoggedIn) return;
@@ -40,8 +38,6 @@ function MyCoursesPage() {
                     getProfile(),
                     getCourses(),
                 ]);
-
-                setProfile(profileData);
 
                 const purchasedIds = new Set(profileData.purchased ?? []);
                 const purchasedCourses = allCourses.filter((c) => purchasedIds.has(c.id));
@@ -68,7 +64,7 @@ function MyCoursesPage() {
 
     const navItems = [
         { label: "داشبورد", path: "/panel" },
-        { label: "دوره‌های من", path: "/panel/courses" }
+        { label: "دوره‌های من", path: "/panel/mycourses" }
     ];
 
     return (
@@ -163,7 +159,6 @@ function MyCoursesPage() {
                             >
                                 <div className="h-32 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-3xl relative">
                                     {course.image ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
                                         <Image
                                             src={course.image}
                                             alt={course.title}
