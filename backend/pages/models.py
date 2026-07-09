@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 
 class SiteSettingsModel(models.Model):
@@ -20,3 +21,29 @@ class SiteSettingsModel(models.Model):
     def __str__(self):
         return self.site_name
     
+
+class ContactFormModel(models.Model):
+    concept = models.CharField(max_length=80, verbose_name='موضوع')
+    name_and_family = models.CharField(max_length=80, verbose_name='نام و نام خوانوادگی')
+    phone_number = models.CharField(
+        max_length=11,
+        unique=True,
+        verbose_name="شماره تلفن",
+        validators=[
+            RegexValidator(
+                regex=r'^09[0-9]{9}$',
+                message='شماره تلفن معتبر نیست. شماره باید با 09 شروع و 11 رقم باشد.',
+                code='invalide_phone_number'
+            )
+        ]
+    )
+    text = models.TextField(verbose_name='متن')
+    is_read = models.BooleanField(default=False, verbose_name='خوانده شده؟')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.concept
+    
+    class Meta:
+        verbose_name = 'فرم تماس با ما'
+        verbose_name_plural = 'فرم های تماس با ما'

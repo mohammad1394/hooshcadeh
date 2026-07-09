@@ -15,4 +15,16 @@ class UserSerializer(serializers.ModelSerializer):
             'user_permissions',
             'groups',
         ]
+
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'phone_number',
+            'avatar'
+        ]
         
