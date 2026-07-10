@@ -60,54 +60,56 @@ export default function ContactForm() {
                             فرم تماس
                         </h3>
 
-                        <div className="grid md:grid-cols-2 gap-6">
+                        <form>
+                            <div className="grid md:grid-cols-2 gap-6">
 
-                            <input
-                                name="fullname"
-                                placeholder="نام و نام خانوادگی"
-                                value={form.fullname}
+                                <input
+                                    name="fullname"
+                                    placeholder="نام و نام خانوادگی"
+                                    value={form.fullname}
+                                    onChange={changeHandler}
+                                    className="rounded-xl border p-4 outline-none focus:border-orange-500"
+                                />
+
+                                <input
+                                    name="email"
+                                    placeholder="ایمیل"
+                                    value={form.email}
+                                    onChange={changeHandler}
+                                    className="rounded-xl border p-4 outline-none focus:border-orange-500"
+                                />
+
+                                <input
+                                    name="phone"
+                                    placeholder="شماره تماس"
+                                    value={form.phone}
+                                    onChange={changeHandler}
+                                    className="rounded-xl border p-4 outline-none focus:border-orange-500"
+                                />
+
+                                <input
+                                    name="subject"
+                                    placeholder="موضوع"
+                                    value={form.subject}
+                                    onChange={changeHandler}
+                                    className="rounded-xl border p-4 outline-none focus:border-orange-500"
+                                />
+
+                            </div>
+
+                            <textarea
+                                rows={6}
+                                name="message"
+                                placeholder="پیام خود را بنویسید..."
+                                value={form.message}
                                 onChange={changeHandler}
-                                className="rounded-xl border p-4 outline-none focus:border-orange-500"
+                                className="mt-6 w-full rounded-xl border p-4 outline-none focus:border-orange-500"
                             />
 
-                            <input
-                                name="email"
-                                placeholder="ایمیل"
-                                value={form.email}
-                                onChange={changeHandler}
-                                className="rounded-xl border p-4 outline-none focus:border-orange-500"
-                            />
-
-                            <input
-                                name="phone"
-                                placeholder="شماره تماس"
-                                value={form.phone}
-                                onChange={changeHandler}
-                                className="rounded-xl border p-4 outline-none focus:border-orange-500"
-                            />
-
-                            <input
-                                name="subject"
-                                placeholder="موضوع"
-                                value={form.subject}
-                                onChange={changeHandler}
-                                className="rounded-xl border p-4 outline-none focus:border-orange-500"
-                            />
-
-                        </div>
-
-                        <textarea
-                            rows={6}
-                            name="message"
-                            placeholder="پیام خود را بنویسید..."
-                            value={form.message}
-                            onChange={changeHandler}
-                            className="mt-6 w-full rounded-xl border p-4 outline-none focus:border-orange-500"
-                        />
-
-                        <button className="mt-6 rounded-xl bg-green-600 px-8 py-4 font-bold text-white transition hover:bg-green-700">
-                            ارسال پیام
-                        </button>
+                            <button className="mt-6 rounded-xl bg-green-600 px-8 py-4 font-bold text-white transition hover:bg-green-700">
+                                ارسال پیام
+                            </button>
+                        </form>
 
                     </div>
 

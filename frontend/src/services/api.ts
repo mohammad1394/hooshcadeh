@@ -12,7 +12,7 @@ const getBaseUrl = () =>
     typeof window === "undefined"
         ? process.env.API_URL_INTERNAL || "http://backend:8000"
         : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
+console.log("isServer:", typeof window === "undefined")
 const buildHeaders = (url: string, options?: RequestInit): HeadersInit => {
     const isServer = typeof window === "undefined";
     const token = isServer ? null : storage.getAccessToken();

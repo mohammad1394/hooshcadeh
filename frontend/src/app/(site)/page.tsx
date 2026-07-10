@@ -19,7 +19,7 @@ export default async function Home() {
                 <LatesCourses courses={courses} />
                 <PopularCourses courses={courses} />
                 <LatestArticle/>
-                <CommentsList/>
+                {/*<CommentsList/>*/}
                 <FreeCourses courses={courses}/>
                 <ExpandableText/>
             </main>
