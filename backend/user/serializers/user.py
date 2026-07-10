@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from user.models import UserModel
-
+from .transaction import TransactionSerializer
 
 class UserSerializer(serializers.ModelSerializer):
+    transaction = serializers.SerializerMethodField()
     class Meta:
         model = UserModel
         exclude = [
@@ -15,7 +16,10 @@ class UserSerializer(serializers.ModelSerializer):
             'user_permissions',
             'groups',
         ]
-
+    def get_transaction(self, obj):
+        user_transactions = obj.transaction.all()
+        serializer = TransactionSerializer(user_transactions, many=True)
+        return serializer.data
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
