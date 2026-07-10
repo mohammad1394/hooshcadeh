@@ -10,9 +10,13 @@ const noAuthUrls = [
 
 const getBaseUrl = () =>
     typeof window === "undefined"
-        ? process.env.API_URL_INTERNAL || "http://backend:8000"
+        ? process.env.API_URL_INTERNAL || process.env.NEXT_PUBLIC_API_URL || "http://backend:8000"
         : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-console.log("isServer:", typeof window === "undefined")
+export const isDynamicServerUsageError = (err: unknown) =>
+    err instanceof Error && (
+        err.message.includes("Dynamic server usage") ||
+        (err as Error & { digest?: string }).digest === "DYNAMIC_SERVER_USAGE"
+    );
 const buildHeaders = (url: string, options?: RequestInit): HeadersInit => {
     const isServer = typeof window === "undefined";
     const token = isServer ? null : storage.getAccessToken();
@@ -56,16 +60,18 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
     const baseUrl = getBaseUrl();
     const fullUrl = `${baseUrl}/api${url}`;
 
-    console.log(`[api] ${options?.method || "GET"} ${fullUrl}`);
-
     let res: Response;
     try {
         res = await fetch(fullUrl, {
+            cache: "no-store",
             ...options,
             headers: buildHeaders(url, options),
             credentials: "include",
         });
     } catch (err) {
+        if (isDynamicServerUsageError(err)) {
+            throw err;
+        }
         throw new Error(`خطا در اتصال به سرور: ${fullUrl} - ${err}`);
     }
 
@@ -82,6 +88,7 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
         let retryRes: Response;
         try {
             retryRes = await fetch(fullUrl, {
+                cache: "no-store",
                 ...options,
                 headers: {
                     ...buildHeaders(url, options),
@@ -90,6 +97,9 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
                 credentials: "include",
             });
         } catch (err) {
+            if (isDynamicServerUsageError(err)) {
+                throw err;
+            }
             throw new Error(`خطا در اتصال به سرور هنگام تلاش مجدد: ${err}`);
         }
 
@@ -111,7 +121,6 @@ export async function api<T>(url: string, options?: RequestInit): Promise<T> {
 
     const data = await res.json();
     if (!res.ok) {
-        console.log("API Error response:", data); // add this
         throw new Error(data.message || data.detail || JSON.stringify(data) || "خطایی رخ داد");
     }
 

@@ -13,6 +13,7 @@ type Props = {
 
 
 function IntroSection({courses} : Props) {
+    void courses;
     const [search, setSearch] = useState("");
     const router = useRouter();
 

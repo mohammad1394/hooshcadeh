@@ -27,10 +27,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Load cart
     useEffect(() => {
-        const data = localStorage.getItem("cart");
-        if (data) {
-            setCart(JSON.parse(data));
-        }
+        const loadCart = () => {
+            const data = localStorage.getItem("cart");
+            if (data) {
+                setCart(JSON.parse(data));
+            }
+        };
+
+        queueMicrotask(loadCart);
     }, []);
 
     // Save cart

@@ -7,6 +7,7 @@ from .views import (
     ResentOtpCodeView,
     TeacherDetailView,
     ProfileDetailView,
+    ProfileUpdateView
 )
 
 app_name = 'user'
@@ -19,4 +20,5 @@ urlpatterns = [
     path('resent/verify-code/', ResentOtpCodeView.as_view(), name='resent-verify-code'),
     path('teacher/<int:pk>/', TeacherDetailView.as_view(), name='teacher-detail'),
     path('profile/<int:pk>/', ProfileDetailView.as_view(), name='profile-detail'),
+    path('profile/update/<int:pk>/', ProfileUpdateView.as_view(), name='profile-update'),
 ]

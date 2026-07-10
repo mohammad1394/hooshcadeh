@@ -30,11 +30,6 @@ export default function SignUp() {
     const [verifyError, setVerifyError] = useState("");
 
     useEffect(() => {
-        if (step !== "verify") return;
-        setTimer(180);
-    }, [step]);
-
-    useEffect(() => {
         if (timer === 0 || step !== "verify") return;
         const interval = setInterval(() => {
             setTimer((prev) => prev - 1);
@@ -50,10 +45,12 @@ export default function SignUp() {
         e.preventDefault();
         setFormError("");
         setLoadingForm(true);
-        console.log("sending:", form); // add this
         try {
             const res = await signUp(form);
-            if (res.success) setStep("verify");
+            if (res.success) {
+                setTimer(180);
+                setStep("verify");
+            }
         } catch {
             setFormError("خطا در ثبت‌نام. دوباره تلاش کنید.");
         } finally {
@@ -68,7 +65,7 @@ export default function SignUp() {
         try {
             const res = await verifySignUp({ code });
             if (res.success) {
-                const profile = await getProfile();
+                const profile = await getProfile(res.access);
                 login({ access: res.access, refresh: res.refresh }, profile);
                 router.push("/");
             }

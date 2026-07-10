@@ -1,9 +1,10 @@
 import React from 'react';
 import Container from "@/components/Layout/container/Container";
-import {createBlogComment, getBlogSlug} from "@/services/blog";
+import {getBlogSlug} from "@/services/blog";
 import Image from "next/image";
 import CommentSection from "@/components/modules/CommentSection/CommentSection";
 import {Blog} from "@/types/blog";
+import {notFound} from "next/navigation";
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -12,7 +13,14 @@ interface Props {
 async function Page({params}: Props) {
     const {slug} = await params;
     const decodedSlug = decodeURIComponent(slug);
-    const data: Blog = await getBlogSlug(decodedSlug);
+    let data: Blog;
+
+    try {
+        data = await getBlogSlug(decodedSlug);
+    } catch (error) {
+        console.error(error);
+        notFound();
+    }
 
     return (
         <div className="bg-[#f5f4f0] min-h-screen py-30">

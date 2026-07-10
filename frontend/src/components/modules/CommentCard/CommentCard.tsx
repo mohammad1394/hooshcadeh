@@ -1,6 +1,7 @@
 import React from "react";
-import { Star, User } from "lucide-react";
+import { User } from "lucide-react";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type TestimonialCardProps = {
     text: string;
     name: string;

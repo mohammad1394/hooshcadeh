@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { getProfile } from "@/services/auth";
 import { toast } from "react-hot-toast";
 import { storage } from "@/lib/storage";
+import SidebarPanel from "@/components/modules/SidebarPanel/SidebarPanel";
 
 type Profile = {
     id: number;
@@ -26,19 +27,30 @@ type CartItem = {
 };
 
 function PanelPage() {
-    const { isLoggedIn, isInitialized } = useAuth();
+    const { isLoggedIn, isInitialized, logout } = useAuth();
     const router = useRouter();
 
     const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
     const [cartCount, setCartCount] = useState(0);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const readCart = useCallback(() => {
+        try {
+            const raw = localStorage.getItem("cart");
+            const items: CartItem[] = raw ? JSON.parse(raw) : [];
+            setCartCount(items.length);
+        } catch {
+            setCartCount(0);
+        }
+    }, []);
 
     useEffect(() => {
         if (isInitialized && !isLoggedIn) {
             toast.error("لطفا اول وارد شوید");
             router.push("/login");
         }
-    }, [isInitialized, isLoggedIn]);
+    }, [isInitialized, isLoggedIn, router]);
 
     useEffect(() => {
         if (!isInitialized || !isLoggedIn) return;
@@ -58,21 +70,11 @@ function PanelPage() {
         };
 
         fetchProfile();
-        readCart();
+        queueMicrotask(readCart);
 
         window.addEventListener("storage", readCart);
         return () => window.removeEventListener("storage", readCart);
-    }, [isInitialized, isLoggedIn]);
-
-    const readCart = () => {
-        try {
-            const raw = localStorage.getItem("cart");
-            const items: CartItem[] = raw ? JSON.parse(raw) : [];
-            setCartCount(items.length);
-        } catch {
-            setCartCount(0);
-        }
-    };
+    }, [isInitialized, isLoggedIn, readCart]);
 
     if (!isInitialized) {
         return (
@@ -88,44 +90,61 @@ function PanelPage() {
     const initial = displayName.trim().charAt(0) || "ک";
 
     return (
-        <div className="max-w-5xl">
-            {/* Welcome card */}
-            <div className="relative overflow-hidden rounded-2xl p-6 md:p-7 bg-gradient-to-l from-[#1E3A6E] to-[#1D4ED8] text-white shadow-sm">
-                <div className="absolute -left-8 -top-10 w-40 h-40 rounded-full bg-white/10" />
-                <div className="absolute left-16 -bottom-12 w-28 h-28 rounded-full bg-white/5" />
+        <div className="min-h-screen bg-[#F5F7FB] flex" dir="rtl">
+            <SidebarPanel
+                displayName={displayName}
+                initial={initial}
+                logout={logout}
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+            />
 
-                <div className="relative flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-2xl font-bold shrink-0">
-                        {initial}
-                    </div>
-                    <div>
-                        <p className="text-sm text-white/70">خوش اومدی 👋</p>
-                        {loading ? (
-                            <div className="h-6 w-40 bg-white/20 rounded mt-2 animate-pulse" />
-                        ) : (
-                            <h1 className="text-xl font-bold mt-1">{displayName}</h1>
-                        )}
+            <main className="flex-1 p-6 md:p-8 max-w-5xl">
+                <button
+                    onClick={() => setIsSidebarOpen(true)}
+                    className="md:hidden mb-4 text-gray-600 text-sm font-medium"
+                >
+                    ☰ منو
+                </button>
+
+                {/* Welcome card */}
+                <div className="relative overflow-hidden rounded-2xl p-6 md:p-7 bg-gradient-to-l from-[#1E3A6E] to-[#1D4ED8] text-white shadow-sm">
+                    <div className="absolute -left-8 -top-10 w-40 h-40 rounded-full bg-white/10" />
+                    <div className="absolute left-16 -bottom-12 w-28 h-28 rounded-full bg-white/5" />
+
+                    <div className="relative flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-full bg-white/15 backdrop-blur flex items-center justify-center text-2xl font-bold shrink-0">
+                            {initial}
+                        </div>
+                        <div>
+                            <p className="text-sm text-white/70">خوش اومدی 👋</p>
+                            {loading ? (
+                                <div className="h-6 w-40 bg-white/20 rounded mt-2 animate-pulse" />
+                            ) : (
+                                <h1 className="text-xl font-bold mt-1">{displayName}</h1>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-                <StatCard
-                    href="/panel/mycourses"
-                    label="دوره‌های من"
-                    value={profile?.purchased?.length ?? 0}
-                    accent="from-emerald-400 to-emerald-600"
-                    icon="🎓"
-                />
-                <StatCard
-                    href="/cart"
-                    label="سبد خرید"
-                    value={cartCount}
-                    accent="from-orange-400 to-orange-500"
-                    icon="🛒"
-                />
-            </div>
+                {/* Stats */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                    <StatCard
+                        href="/panel/mycourses"
+                        label="دوره‌های من"
+                        value={profile?.purchased?.length ?? 0}
+                        accent="from-emerald-400 to-emerald-600"
+                        icon="🎓"
+                    />
+                    <StatCard
+                        href="/cart"
+                        label="سبد خرید"
+                        value={cartCount}
+                        accent="from-orange-400 to-orange-500"
+                        icon="🛒"
+                    />
+                </div>
+            </main>
         </div>
     );
 }

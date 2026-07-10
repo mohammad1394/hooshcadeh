@@ -22,15 +22,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [accessToken, setAccessToken] = useState<string | null>(null);
 
     useEffect(() => {
-        const userData = storage.getUser();
-        const token = storage.getAccessToken();
+        const initializeAuth = () => {
+            const token = storage.getAccessToken();
+            const userData = storage.getUser();
 
-        if (token && userData) {
-            setAccessToken(token);
-            setIsLoggedIn(true);
-            setUser(userData);
-        }
-        setIsInitialized(true);
+            if (token && userData) {
+                setAccessToken(token);
+                setIsLoggedIn(true);
+                setUser(userData);
+            }
+            setIsInitialized(true);
+        };
+
+        queueMicrotask(initializeAuth);
     }, []);
 
     const login = (tokens: AuthTokens, user: User) => {

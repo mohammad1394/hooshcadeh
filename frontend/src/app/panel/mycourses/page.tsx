@@ -15,16 +15,17 @@ function MyCoursesPage() {
     const { isLoggedIn, logout, isInitialized, accessToken } = useAuth();
     const router = useRouter();
 
-    const [profile, setProfile] = useState<Profile | null>(null);
     const [myCourses, setMyCourses] = useState<Course[]>([]);
+    const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         if (isInitialized && !isLoggedIn) {
             router.push("/login");
         }
-    }, [isInitialized, isLoggedIn]);
+    }, [isInitialized, isLoggedIn, router]);
 
     useEffect(() => {
         if (!isInitialized || !isLoggedIn) return;
@@ -39,7 +40,6 @@ function MyCoursesPage() {
                     router.push("/login");
                 }
                 const [profileData, allCourses] = await Promise.all([
-
                     getProfile(accessToken),
                     getCourses(),
                 ]);
@@ -74,8 +74,23 @@ function MyCoursesPage() {
 
     return (
         <div className="min-h-screen bg-[#F5F7FB] flex" dir="rtl">
+            <SidebarPanel
+                displayName={displayName}
+                initial={initial}
+                logout={logout}
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+            />
+
             {/* ---------- Main content ---------- */}
             <main className="flex-1 p-6 md:p-8 max-w-5xl">
+
+                <button
+                    onClick={() => setIsSidebarOpen(true)}
+                    className="md:hidden mb-4 text-gray-600 text-sm font-medium"
+                >
+                    ☰ منو
+                </button>
 
                 <div className="flex items-center justify-between mb-6">
                     <h1 className="text-xl font-bold text-gray-900">دوره‌های من</h1>
@@ -157,7 +172,7 @@ function MyCoursesPage() {
                                         {course.discount > 0 ? (
                                             <span className="flex items-center gap-1.5">
                                                 <span className="text-[11px] text-gray-300 line-through">
-                                                    {formatPrice(Number((course.orginal_price)))}
+                                                    {formatPrice(Number(course.orginal_price))}
                                                 </span>
                                                 <span className="text-xs font-bold text-emerald-600">
                                                     {formatPrice(Number(course.final_price))}
