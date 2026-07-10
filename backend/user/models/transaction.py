@@ -4,33 +4,37 @@ from django.contrib import admin
 
 
 class TransactionModel(models.Model):
-    concept = models.CharField(max_length=80, verbose_name='موضوع تراکنش')
+    concept = models.CharField(max_length=80, verbose_name="موضوع تراکنش")
+
     user = models.ForeignKey(
-        'user.UserModel',
+        "user.UserModel",
         on_delete=models.CASCADE,
-        related_name='transaction',
-        verbose_name='کاربر'
+        related_name="transaction",
+        verbose_name="کاربر",
     )
-    amount = models.PositiveIntegerField(verbose_name='مبلغ')
+
+    amount = models.PositiveIntegerField(verbose_name="مبلغ")
+
     text = models.TextField(
         null=True,
         blank=True,
-        verbose_name='توضیحات تراکنش'
+        verbose_name="توضیحات تراکنش",
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.full_name}: {self.concept} :{self.amount}"
-    
+        return f"{self.user.full_name}: {self.concept} : {self.amount}"
+
     @property
     def formatted_amount(self):
-        return f'{self.price:,}'
-    
+        return f"{self.amount:,}"
+
     @property
-    @admin.display(description='زمان ساخت')
+    @admin.display(description="زمان ساخت")
     def created_at_jalali(self):
-        return datetime2jalali(self.created_at).strftime('%Y/%m/%d - %H:%M')
-    
+        return datetime2jalali(self.created_at).strftime("%Y/%m/%d - %H:%M")
+
     class Meta:
-        verbose_name = 'تراکنش'
-        verbose_name_plural = 'تراکنش ها'
+        verbose_name = "تراکنش"
+        verbose_name_plural = "تراکنش ها"

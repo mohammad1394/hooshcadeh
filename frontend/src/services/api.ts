@@ -21,9 +21,10 @@ const buildHeaders = (url: string, options?: RequestInit): HeadersInit => {
     const isServer = typeof window === "undefined";
     const token = isServer ? null : storage.getAccessToken();
     const shouldSendToken = !noAuthUrls.some(u => url.includes(u));
+    const isFormData = options?.body instanceof FormData;
 
     return {
-        "Content-Type": "application/json",
+        ...(!isFormData && { "Content-Type": "application/json" }),
         ...(token && shouldSendToken && { Authorization: `Bearer ${token}` }),
         ...options?.headers,
     };

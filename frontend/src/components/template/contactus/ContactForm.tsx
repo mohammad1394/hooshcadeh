@@ -2,24 +2,65 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import {contactUs} from "@/services/contact-us";
+import {toast} from "react-hot-toast";
 
 export default function ContactForm() {
     const [form, setForm] = useState({
-        fullname: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
-    });
 
-    const changeHandler = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
+        name_and_family: "",
+
+        phone_number: "",
+
+        concept: "",
+
+        text: "",
+
+    });
+    const [isLoading, setIsLoading] = useState(false);
+    const changeHandler = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
         });
+
     };
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (form.name_and_family === "" ) {
+            toast.error("لطفا نام و نام خانوادگی خود را وارد کنید")
+            return;
+        }
+        if (form.concept === ""){
+            toast.error("لطفا موضوع مورد نظرتان را وارد کنید")
+            return;
+        }
+        if (form.phone_number.length !== 11){
+            toast.error("شماره تلفن درست نمیباشد")
+            return
+        }
+        if (form.text === ""){
+            toast.error("متن پیام را وارد کنید")
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const res = await contactUs({...form , is_read : true})
+            toast.success("پیام شما با موفقیت ارسال شد ")
+            setForm({name_and_family:  "" , concept:  "" , phone_number: "" , text: "" , });
+        }
+        catch (err) {
+            console.log(err)
+            toast.error("ارسال پیام با خطا مواجه شد ")
+        }finally {
+            setIsLoading(false);
+        }
+
+
+
+    }
+
 
     return (
         <section
@@ -60,37 +101,31 @@ export default function ContactForm() {
                             فرم تماس
                         </h3>
 
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="grid md:grid-cols-2 gap-6">
 
                                 <input
-                                    name="fullname"
+                                    name="name_and_family"
+                                    value={form.name_and_family}
+                                    onChange={changeHandler}
                                     placeholder="نام و نام خانوادگی"
-                                    value={form.fullname}
-                                    onChange={changeHandler}
-                                    className="rounded-xl border p-4 outline-none focus:border-orange-500"
+                                    className="border rounded-lg px-4 py-2.5"
+                                    required
                                 />
 
-                                <input
-                                    name="email"
-                                    placeholder="ایمیل"
-                                    value={form.email}
-                                    onChange={changeHandler}
-                                    className="rounded-xl border p-4 outline-none focus:border-orange-500"
-                                />
 
                                 <input
-                                    name="phone"
+                                    name="phone_number"
                                     placeholder="شماره تماس"
-                                    value={form.phone}
+                                    value={form.phone_number}
                                     onChange={changeHandler}
                                     className="rounded-xl border p-4 outline-none focus:border-orange-500"
+                                    required
                                 />
-
                                 <input
-                                    name="subject"
+                                    name="concept"
                                     placeholder="موضوع"
-                                    value={form.subject}
+                                    value={form.concept}
                                     onChange={changeHandler}
                                     className="rounded-xl border p-4 outline-none focus:border-orange-500"
                                 />
@@ -99,9 +134,9 @@ export default function ContactForm() {
 
                             <textarea
                                 rows={6}
-                                name="message"
+                                name="text"
                                 placeholder="پیام خود را بنویسید..."
-                                value={form.message}
+                                value={form.text}
                                 onChange={changeHandler}
                                 className="mt-6 w-full rounded-xl border p-4 outline-none focus:border-orange-500"
                             />

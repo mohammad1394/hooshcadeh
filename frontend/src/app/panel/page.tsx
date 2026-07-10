@@ -91,13 +91,6 @@ function PanelPage() {
 
     return (
         <div className="min-h-screen bg-[#F5F7FB] flex" dir="rtl">
-            <SidebarPanel
-                displayName={displayName}
-                initial={initial}
-                logout={logout}
-                isOpen={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-            />
 
             <main className="flex-1 p-6 md:p-8 max-w-5xl">
                 <button
@@ -140,7 +133,7 @@ function PanelPage() {
                         href="/cart"
                         label="سبد خرید"
                         value={cartCount}
-                        accent="from-orange-400 to-orange-500"
+                        accent="from-o</>range-400 to-orange-500"
                         icon="🛒"
                     />
                 </div>

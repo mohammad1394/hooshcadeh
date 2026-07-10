@@ -74,14 +74,7 @@ function MyCoursesPage() {
 
     return (
         <div className="min-h-screen bg-[#F5F7FB] flex" dir="rtl">
-            <SidebarPanel
-                displayName={displayName}
-                initial={initial}
-                logout={logout}
-                isOpen={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-            />
-
+            
             {/* ---------- Main content ---------- */}
             <main className="flex-1 p-6 md:p-8 max-w-5xl">
 

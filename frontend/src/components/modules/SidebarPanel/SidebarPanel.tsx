@@ -39,7 +39,7 @@ function SidebarPanel({ displayName, initial, logout, isOpen, onClose }: Sidebar
 
             <aside
                 className={`
-                    fixed md:static top-0 right-0 h-full md:h-auto w-[260px]
+                    fixed md:static top-0 right-0 h-full md:h-170 w-[260px]
                     bg-white border-l border-gray-100 p-6 flex flex-col gap-1
                     z-50 md:z-auto
                     transition-transform duration-300
