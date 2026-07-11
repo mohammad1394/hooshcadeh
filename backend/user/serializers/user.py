@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from user.models import UserModel
+from .transaction import TransactionSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
+    transaction = serializers.SerializerMethodField()
 
     class Meta:
         model = UserModel
@@ -17,6 +19,10 @@ class UserSerializer(serializers.ModelSerializer):
             "groups",
         ]
 
+    def get_transaction(self, obj):
+        transactions = obj.transaction.all()
+        serializer = TransactionSerializer(transactions, many=True)
+        return serializer.data
 
 class UpdateUserSerializer(serializers.ModelSerializer):
 
