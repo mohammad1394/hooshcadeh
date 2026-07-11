@@ -3,13 +3,21 @@
 export type User = {
     id: number;
     phone_number: string;
+    transaction: transaction[]
     first_name: string;
     last_name: string;
     full_name: string;
     avatar: string;
     purchased: number[];
 };
-
+export type transaction = {
+    id: number
+    concept: string
+    amount: number
+    text: string
+    created_at: string
+    user: number
+}
 export type AuthTokens = {
     access: string;
     refresh: string;

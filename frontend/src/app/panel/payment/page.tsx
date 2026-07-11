@@ -1,101 +1,122 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { SlidersHorizontal } from "lucide-react";
-
-type OrderStatus = "paid" | "canceled" | "pending";
+import { storage } from "@/lib/storage";
+import { getProfile } from "@/services/auth";
+import { useAuth } from "@/context/AuthContext";
+import { User } from "@/types/auth";
+import { toast } from "react-hot-toast";
 
 type Order = {
     id: string;
-    description: string;
+    title: string;
+    detail: string;
     date: string;
     amount: number;
-    status: OrderStatus;
     detailsHref?: string;
 };
 
-const statusConfig: Record<OrderStatus, { label: string; className: string }> = {
-    paid: {
-        label: "پرداخت شده",
-        className: "bg-emerald-50 text-emerald-600",
-    },
-    canceled: {
-        label: "لغو شده",
-        className: "bg-red-50 text-red-500",
-    },
-    pending: {
-        label: "در انتظار پرداخت",
-        className: "bg-amber-50 text-amber-600",
-    },
-};
+function toJalaliDate(isoDate: string): string {
+    const date = new Date(isoDate);
+
+    if (isNaN(date.getTime())) {
+        return isoDate;
+    }
+
+    return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    }).format(date);
+}
+
+function toJalaliDateTime(isoDate: string): string {
+    const date = new Date(isoDate);
+
+    if (isNaN(date.getTime())) {
+        return isoDate;
+    }
+
+    return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(date);
+}
 
 function OrdersPage() {
-    const [orders, setOrders] = useState<Order[]>([
-        {
-            id: "10235",
-            description: "خرید دوره جامع React",
-            date: "۱۴۰۵/۰۴/۱۰",
-            amount: 2500000,
-            status: "paid",
-            detailsHref: "/profile/orders/10235",
-        },
-        {
-            id: "10236",
-            description: "خرید دوره Next.js",
-            date: "۱۴۰۵/۰۴/۰۸",
-            amount: 1800000,
-            status: "pending",
-            detailsHref: "/profile/orders/10236",
-        },
-        {
-            id: "10237",
-            description: "خرید دوره TypeScript",
-            date: "۱۴۰۵/۰۴/۰۵",
-            amount: 1200000,
-            status: "canceled",
-            detailsHref: "/profile/orders/10237",
-        },
-    ]);
-
+    const { isLoggedIn, isInitialized } = useAuth();
+    const [profile, setProfile] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchOrders = async () => {
+        if (!isInitialized) return;
+
+        if (!isLoggedIn) {
+            setLoading(false);
+            return;
+        }
+
+        let isMounted = true;
+
+        const fetchProfile = async () => {
             try {
-                setLoading(true);
+                const accessToken = storage.getAccessToken();
+                if (!accessToken) {
+                    setLoading(false);
+                    return;
+                }
 
-                // TODO:
-                // این قسمت را بعداً با API واقعی جایگزین کن.
-                // const data = await getOrders(accessToken);
-                // setOrders(data);
-
-                await new Promise((resolve) => setTimeout(resolve, 800));
-            } catch (error) {
-                console.error(error);
+                const data = await getProfile(accessToken);
+                if (isMounted) {
+                    setProfile(data);
+                }
+            } catch (err) {
+                console.error(err);
+                toast.error("دریافت اطلاعات کاربری با خطا مواجه شد");
+                if (isMounted) {
+                    setError("دریافت سفارش‌ها با خطا مواجه شد");
+                }
             } finally {
-                setLoading(false);
+                if (isMounted) {
+                    setLoading(false);
+                }
             }
         };
 
-        fetchOrders();
-    }, []);
+        fetchProfile();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [isInitialized, isLoggedIn]);
+
+    const orders: Order[] = (profile?.transaction ?? []).map((t) => ({
+        id: String(t.id),
+        title: t.concept,
+        detail: t.text,
+        date: toJalaliDate(t.created_at),
+        amount: t.amount,
+    }));
 
     return (
         <div className="max-w-5xl" dir="rtl">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
-                <h1 className="text-lg font-bold text-gray-900">
-                    سفارش‌های من
-                </h1>
-
-                <button
-                    className="w-9 h-9 rounded-lg bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-gray-500 transition-colors"
-                    aria-label="فیلتر"
-                >
-                    <SlidersHorizontal size={16} />
-                </button>
+                <h1 className="text-lg font-bold text-gray-900">سفارش‌های من</h1>
             </div>
+
+            {/* Not logged in */}
+            {isInitialized && !isLoggedIn && (
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center">
+                    <p className="text-gray-700 font-medium">
+                        برای مشاهده سفارش‌ها ابتدا وارد حساب کاربری خود شوید
+                    </p>
+                </div>
+            )}
 
             {/* Loading */}
             {loading && (
@@ -109,15 +130,18 @@ function OrdersPage() {
                 </div>
             )}
 
+            {/* Error */}
+            {!loading && error && (
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center">
+                    <p className="text-red-500 font-medium">{error}</p>
+                </div>
+            )}
+
             {/* Empty */}
-            {!loading && orders.length === 0 && (
+            {!loading && !error && isLoggedIn && orders.length === 0 && (
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center">
                     <p className="text-4xl mb-3">🧾</p>
-
-                    <p className="text-gray-700 font-medium">
-                        هنوز سفارشی ثبت نکردی
-                    </p>
-
+                    <p className="text-gray-700 font-medium">هنوز سفارشی ثبت نکردی</p>
                     <p className="text-sm text-gray-400 mt-2">
                         سفارش‌هایی که ثبت کنی اینجا نمایش داده می‌شوند.
                     </p>
@@ -125,30 +149,16 @@ function OrdersPage() {
             )}
 
             {/* Desktop Table */}
-            {!loading && orders.length > 0 && (
+            {!loading && !error && orders.length > 0 && (
                 <div className="hidden md:block overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm">
                     <table className="w-full text-sm">
                         <thead>
                         <tr className="border-b border-gray-100 text-gray-400 text-xs">
-                            <th className="text-right py-4 px-6 font-medium">
-                                شناسه
-                            </th>
-
-                            <th className="text-right py-4 px-6 font-medium">
-                                شرح تراکنش
-                            </th>
-
-                            <th className="text-right py-4 px-6 font-medium">
-                                تاریخ
-                            </th>
-
-                            <th className="text-right py-4 px-6 font-medium">
-                                مبلغ
-                            </th>
-
-                            <th className="text-right py-4 px-6 font-medium">
-                                وضعیت
-                            </th>
+                            <th className="text-right py-4 px-6 font-medium">شناسه</th>
+                            <th className="text-right py-4 px-6 font-medium">شرح تراکنش</th>
+                            <th className="text-right py-4 px-6 font-medium">توضیحات</th>
+                            <th className="text-right py-4 px-6 font-medium">تاریخ</th>
+                            <th className="text-right py-4 px-6 font-medium">مبلغ</th>
                         </tr>
                         </thead>
 
@@ -158,38 +168,11 @@ function OrdersPage() {
                                 key={order.id}
                                 className="border-b border-gray-100 last:border-none hover:bg-gray-50 transition-colors"
                             >
-                                <td className="py-4 px-6 text-gray-500 tabular-nums">
-                                    {order.id}
-                                </td>
-
-                                <td className="py-4 px-6">
-                                    <div className="flex items-center gap-2">
-                                            <span className="font-medium text-gray-800">
-                                                {order.description}
-                                            </span>
-
-                                        {order.detailsHref && (
-                                            <Link
-                                                href={order.detailsHref}
-                                                className="text-xs text-blue-600 hover:underline"
-                                            >
-                                                (جزئیات)
-                                            </Link>
-                                        )}
-                                    </div>
-                                </td>
-
-                                <td className="py-4 px-6 text-gray-500">
-                                    {order.date}
-                                </td>
-
-                                <td className="py-4 px-6 font-bold text-gray-900 tabular-nums">
-                                    {formatPrice(order.amount)}
-                                </td>
-
-                                <td className="py-4 px-6">
-                                    <StatusBadge status={order.status} />
-                                </td>
+                                <td className="py-4 px-6 text-gray-500 tabular-nums">{order.id}</td>
+                                <td className="py-4 px-6 text-gray-500">{order.title}</td>
+                                <td className="py-4 px-6 text-gray-500">{order.detail}</td>
+                                <td className="py-4 px-6">{order.date}</td>
+                                <td className="py-4 px-6 text-gray-500">{formatPrice(order.amount)}</td>
                             </tr>
                         ))}
                         </tbody>
@@ -198,7 +181,7 @@ function OrdersPage() {
             )}
 
             {/* Mobile Cards */}
-            {!loading && orders.length > 0 && (
+            {!loading && !error && orders.length > 0 && (
                 <div className="md:hidden flex flex-col gap-4">
                     {orders.map((order) => (
                         <div
@@ -207,21 +190,12 @@ function OrdersPage() {
                         >
                             <div className="flex justify-between items-start mb-3 gap-3">
                                 <div>
-                                    <p className="font-medium text-gray-800">
-                                        {order.description}
-                                    </p>
+                                    <p className="font-medium text-gray-800">{order.title}</p>
 
-                                    {order.detailsHref && (
-                                        <Link
-                                            href={order.detailsHref}
-                                            className="text-xs text-blue-600 hover:underline mt-1 inline-block"
-                                        >
-                                            مشاهده جزئیات
-                                        </Link>
+                                    {order.detail && (
+                                        <p className="text-xs text-gray-400 mt-1">{order.detail}</p>
                                     )}
                                 </div>
-
-                                <StatusBadge status={order.status} />
                             </div>
 
                             <div className="flex justify-between text-xs text-gray-400">
@@ -240,21 +214,8 @@ function OrdersPage() {
     );
 }
 
-function StatusBadge({ status }: { status: OrderStatus }) {
-    const config = statusConfig[status];
-
-    return (
-        <span
-            className={`inline-flex items-center rounded-lg px-3 py-1.5 text-xs font-medium ${config.className}`}
-        >
-            {config.label}
-        </span>
-    );
-}
-
 function formatPrice(value: number) {
     if (value === 0) return "رایگان";
-
     return `${value.toLocaleString("fa-IR")} تومان`;
 }
 
