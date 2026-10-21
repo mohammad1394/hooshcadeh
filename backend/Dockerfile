@@ -34,12 +34,6 @@ RUN python manage.py collectstatic --noinput 2>/dev/null || true
 RUN adduser --disabled-password --no-create-home appuser
 USER appuser
 
-EXPOSE 8000
+EXPOSE 10000
 
-# Run with gunicorn in production
-CMD ["gunicorn", "config.wsgi:application", \
-     "--bind", "0.0.0.0:8000", \
-     "--workers", "3", \
-     "--timeout", "120", \
-     "--access-logfile", "-", \
-     "--error-logfile", "-"]
+CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-10000} --workers 3 --timeout 120 --access-logfile - --error-logfile -"]
