@@ -13,24 +13,40 @@ import type {
 export const signUp = (data: SignUpData): Promise<MessageResponse> =>
     api<MessageResponse>("/auth/sign-up/", {
         method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
     });
 
 export const verifySignUp = (data: VerifyCodeData): Promise<AuthResponse> =>
     api<AuthResponse>("/auth/sign-up/verify-code/", {
         method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
     });
 
 export const login = (data: LoginData): Promise<MessageResponse> =>
     api<MessageResponse>("/auth/login/", {
         method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
     });
 
 export const verifyLogin = (data: VerifyCodeData): Promise<AuthResponse> =>
     api<AuthResponse>("/auth/login/verify-code/", {
         method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
     });
 
