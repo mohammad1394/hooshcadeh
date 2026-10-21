@@ -11,6 +11,6 @@ export type EditProfileResponse = {
 export const editProfile = (id: string, formData: FormData) => {
     return api<EditProfileResponse>(`/auth/profile/update/${id}/`, {
         method: "PUT",
-        body: formData,   // مستقیم، بدون JSON.stringify
+        body: formData,
     });
 };

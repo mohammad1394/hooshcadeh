@@ -28,24 +28,21 @@ function EditProfileForm() {
                 if (!accessToken) return;
 
                 const data = await getProfile(accessToken);
+
                 setProfile(data);
+
+                setForm({
+                    first_name: data.first_name || "",
+                    last_name: data.last_name || "",
+                    phone_number: data.phone_number || "",
+                });
             } catch (error) {
                 console.error(error);
             }
         };
+
         fetchProfile();
     }, []);
-
-    useEffect(() => {
-        if (profile) {
-            setForm({
-                first_name: profile.first_name || "",
-                last_name: profile.last_name || "",
-                phone_number: profile.phone_number || "",
-                avatar :profile.avatar || "",
-            });
-        }
-    }, [profile]);
 
     const handleAvatarClick = () => fileInputRef.current?.click();
 
@@ -76,7 +73,7 @@ function EditProfileForm() {
                 payload.append("avatar", avatarFile);
             }
 
-            await editProfile(profile.id, payload);
+            await editProfile(String(profile.id), payload);
             toast.success("اطلاعات با موفقیت به‌روزرسانی شد");
         } catch (err) {
             console.error(err);
