@@ -115,54 +115,18 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# ========== CORS ==========
+# CORS
 CORS_ALLOW_CREDENTIALS = True
 
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
-else:
-    CORS_ALLOW_ALL_ORIGINS = False
-
-CORS_ALLOWED_ORIGINS = os.getenv(
-    "CORS_ALLOWED_ORIGINS",
-    "http://localhost:3000,http://127.0.0.1:3000"
-).split(",")
-
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'authorization',
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ALLOWED_ORIGINS",
+        "https://hooshcadeh-six.vercel.app,http://localhost:3000,http://127.0.0.1:3000"
+    ).split(",")
+    if origin.strip()
 ]
 
-JAZZMIN_SETTINGS = {
-    "site_title": "پنل مدیریت",
-    "site_header": "مدیریت سایت",
-    "site_brand": " مدیریت ",
-    "welcome_sign": "خوش آمدید",
-    "copyright": "2026",
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    'custom_css': 'css/admin.css'
-}
-
-CKEDITOR_5_CONFIGS = {
-    "default": {
-        "toolbar": [
-            "heading", "alignment", "|",
-            "bold", "italic", "underline", "strikethrough", "|",
-            "link", "blockquote", "|",
-            "bulletedList", "numberedList", "outdent", "indent", "|",
-            "imageUpload", "insertTable", "|",
-            "undo", "redo",
-        ],
-        "heading": {
-            "options": [
-                {"model": "paragraph", "title": "Paragraph"},
-                {"model": "heading1", "view": "h1", "title": "Heading 1"},
-                {"model": "heading2", "view": "h2", "title": "Heading 2"},
-                {"model": "heading3", "view": "h3", "title": "Heading 3"},
-                {"model": "heading4", "view": "h4", "title": "Heading 4"},
-                {"model": "heading5", "view": "h5", "title": "Heading 5"},
-                {"model": "heading6", "view": "h6", "title": "Heading 6"},
-            ]
-        },
-    }
-}
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "authorization",
+]
