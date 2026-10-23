@@ -28,7 +28,7 @@ COPY --from=builder /install /usr/local
 COPY . .
 
 # Collect static files (if any)
-RUN python manage.py collectstatic --noinput 2>/dev/null || true
+RUN python manage.py collectstatic --noinput
 
 # Create non-root user for security
 RUN adduser --disabled-password --no-create-home appuser
