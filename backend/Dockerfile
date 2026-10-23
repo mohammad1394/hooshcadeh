@@ -36,4 +36,5 @@ USER appuser
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-10000} --workers 3 --timeout 120 --access-logfile - --error-logfile -"]
+COPY start.sh /app/start.sh
+CMD ["sh", "/app/start.sh"]
