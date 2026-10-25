@@ -31,10 +31,12 @@ COPY . .
 RUN python manage.py collectstatic --noinput
 
 # Create non-root user for security
-RUN adduser --disabled-password --no-create-home appuser
-USER appuser
-
-EXPOSE 10000
+RUN adduser --disabled-password --no-create-home appuser \
+    && mkdir -p /app/media \
+    && chown -R appuser:appuser /app/media
 
 COPY start.sh /app/start.sh
+
+USER appuser
+
 CMD ["sh", "/app/start.sh"]
