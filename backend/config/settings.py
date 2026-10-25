@@ -48,7 +48,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'player.middleware.SpotPlayerCookieMiddleware',
 ]
-
+CKEDITOR_5_CONFIGS = {
+    "default": {
+        "toolbar": [
+            "heading",
+            "|",
+            "bold",
+            "italic",
+            "link",
+            "bulletedList",
+            "numberedList",
+            "|",
+            "undo",
+            "redo",
+        ],
+    },
+}
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
