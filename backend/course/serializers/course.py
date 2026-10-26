@@ -41,17 +41,28 @@ class CourseSerializer(serializers.ModelSerializer):
             'updated',
         ]
 
-    def get_image(self, obj):
-        if not obj.image:
-            return None
-        # همیشه از آدرس عمومی استفاده کن، نه از هاست داخلی Docker
-        public_base_url = getattr(settings, 'PUBLIC_MEDIA_BASE_URL', None)
-        if public_base_url:
-            return f"{public_base_url}{obj.image.url}"
-        request = self.context.get('request')
-        if request:
-            return request.build_absolute_uri(obj.image.url)
-        return obj.image.url
+
+def get_image(self, obj):
+    if not obj.image:
+        return None
+
+    public_base_url = getattr(
+        settings,
+        "PUBLIC_MEDIA_BASE_URL",
+        ""
+    ).rstrip("/")
+
+    image_path = obj.image.url
+
+    if public_base_url:
+        return f"{public_base_url}{image_path}"
+
+    request = self.context.get("request")
+    if request:
+        return request.build_absolute_uri(image_path)
+
+    return image_path
+
 
     def get_comments(self, obj):
         approved_comments = obj.course_comments.approved()

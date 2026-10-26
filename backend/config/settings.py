@@ -164,9 +164,9 @@ LOGGING = {
         "console": {
             "class": "logging.StreamHandler",
         },
-    },
+    },ّ
     "root": {
-        "handlers": ["console"],
+        "handlers": ["consoleّ"],
         "level": "INFO",
     },
     "loggers": {
