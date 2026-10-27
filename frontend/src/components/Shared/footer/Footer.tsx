@@ -76,11 +76,11 @@ async function Footer() {
                             <ul className="flex gap-3 flex-col">
                                 <li className="flex items-center gap-2 hover:text-emerald-400 hover:-translate-x-2 transition-all duration-300">
                                     <Phone size={16} className="shrink-0" />
-                                    <span dir="ltr">{siteSettings.phone_number_site}</span>
+                                    <span dir="ltr">{siteSettings.phone_number_site || "/"}</span>
                                 </li>
                                 <li className="flex items-center gap-2 hover:text-emerald-400 hover:-translate-x-2 transition-all duration-300">
                                     <Mail size={16} className="shrink-0" />
-                                    <span dir="ltr">{siteSettings.email_site}</span>
+                                    <span dir="ltr">{siteSettings.email_site || "/"}</span>
                                 </li>
                             </ul>
                         </div>
@@ -92,7 +92,7 @@ async function Footer() {
                                 {quickAccess.map((item) => (
                                     <li key={item.title}>
                                         <Link
-                                            href={item.link}
+                                            href={item.link || "/"}
                                             className="hover:text-emerald-400 hover:-translate-x-2 transition-all duration-300 inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-sm"
                                         >
                                             {item.title}
@@ -109,7 +109,7 @@ async function Footer() {
                                 {siteSections.map((item) => (
                                     <li key={item.title}>
                                         <Link
-                                            href={item.link}
+                                            href={item.link || "/"}
                                             className="hover:text-emerald-400 hover:-translate-x-2 transition-all duration-300 inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-sm"
                                         >
                                             {item.title}
@@ -132,7 +132,7 @@ async function Footer() {
                             </div>
                             <div className={"flex flex-row gap-5"}>
                                 <Link
-                                    href={siteSettings.eitaa}
+                                    href={siteSettings.eitaa || "/"}
                                     className="bg-[#C38E0A] flex items-center justify-center gap-2 col-span-1 lg:col-span-1 p-4 text-center rounded-lg transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
                                 >
                                     <MessageCircle size={18} />
@@ -140,7 +140,7 @@ async function Footer() {
                                 </Link>
 
                                 <Link
-                                    href={siteSettings.telegram}
+                                    href={siteSettings.telegram || "/"}
                                     className="bg-gradient-to-tr from-[#0088cc] to-[#00aaff] flex items-center justify-center gap-2 col-span-1 lg:col-span-1 p-4 text-center rounded-lg transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
                                 >
                                     <Send size={18} />
@@ -152,7 +152,7 @@ async function Footer() {
                         <hr className={"text-white"}/>
                     <div className="flex flex-row justify-between">
                         <p className="">
-                            © تمامی حقوق برای مجموعه  {siteSettings.site_name}محفوظ می‌باشد
+                            © تمامی حقوق برای مجموعه  {siteSettings.site_name || "هوشکده"}محفوظ می‌باشد
 
                         </p>
                         <p>
