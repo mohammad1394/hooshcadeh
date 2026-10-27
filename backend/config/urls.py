@@ -24,7 +24,13 @@ def serve_course_media(request, filename):
     if not file_path.is_file():
         raise Http404
 
-    return FileResponse(open(file_path, "rb"))
+    file = open(file_path, "rb")
+
+    return FileResponse(
+        file,
+        content_type="image/webp",
+        as_attachment=False,
+    )
 
 
 urlpatterns = [

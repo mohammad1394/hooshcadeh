@@ -8,7 +8,7 @@ __pycache__/
 *.egg-info/
 *.egg
 dist/
-build/
+build/`
 *.whl
 venv/
 .env
@@ -22,6 +22,9 @@ media/
 staticfiles/
 *.pot
 *.mo
+!backend/media/
+!backend/media/courses/
+!backend/media/courses/*.webp
 
 # ========================
 # Node.js / Next.js (Frontend)
